@@ -12,7 +12,8 @@ import {
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  Activity
+  Activity,
+  Navigation
 } from 'lucide-react';
 
 interface ProjectsSectionProps {
@@ -22,6 +23,7 @@ interface ProjectsSectionProps {
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderSense }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [navActiveTab, setNavActiveTab] = useState('Home');
 
   // Interactive Solana scrubber state
   const [scrubX, setScrubX] = useState<number | null>(null);
@@ -112,6 +114,20 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       color: '#ef233c',
       icon: Layers,
       type: 'cards',
+    },
+    {
+      id: 'bubble-navbar',
+      title: 'Dynamic Bubble Pill Navbar',
+      missionCode: 'MISSION #NAV-01',
+      badge: 'Fluid Micro-Interaction',
+      category: 'Tactile UI',
+      description: 'Physics-driven dynamic floating pill navbar with spring-based magnetic hover bubbles, layoutId animated pill shifts, and dual-layer specular glassmorphism.',
+      stack: ['Next.js', 'React', 'Framer Motion', 'Tailwind CSS', 'TypeScript'],
+      github: 'https://github.com/alqamarzz/navbaar',
+      demo: 'https://github.com/alqamarzz/navbaar#readme',
+      color: '#38bdf8',
+      icon: Navigation,
+      type: 'navbar',
     },
     {
       id: 'credit-card-3d',
@@ -353,6 +369,36 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                         <span className="text-zinc-300 font-mono-tech text-[11px]">Swipe Action</span>
                         <div className="px-2.5 py-1 rounded bg-[#a855f7] text-white text-[10px] font-bold shadow">
                           ARCHIVE
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Interactive Bubble Navbar Specimen */}
+                    {project.type === 'navbar' && (
+                      <div className="w-full flex items-center justify-center py-2">
+                        <div className="w-fit rounded-full border border-white/15 bg-black/60 p-1 backdrop-blur-xl flex items-center gap-1 shadow-lg">
+                          {['Home', 'Missions', 'Pulse'].map((tab) => (
+                            <button
+                              key={tab}
+                              type="button"
+                              onClick={() => {
+                                sound.playClick();
+                                setNavActiveTab(tab);
+                              }}
+                              className={`relative px-3 py-1 text-[11px] font-medium rounded-full transition-colors cursor-pointer select-none ${
+                                navActiveTab === tab ? 'text-black font-semibold' : 'text-zinc-400 hover:text-white'
+                              }`}
+                            >
+                              {navActiveTab === tab && (
+                                <motion.div
+                                  layoutId="card-nav-bubble"
+                                  className="absolute inset-0 rounded-full bg-white shadow-md"
+                                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                />
+                              )}
+                              <span className="relative z-10">{tab}</span>
+                            </button>
+                          ))}
                         </div>
                       </div>
                     )}
