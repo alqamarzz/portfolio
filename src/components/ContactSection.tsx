@@ -21,8 +21,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [sending, setSending] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const email = 'alqamarziaul12@gmail.com';
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mrpezvev';
 
   const copyEmail = () => {
     sound.playThwip();
@@ -39,27 +41,45 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
     setTimeout(() => setCopied(false), 3000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sound.playThwip();
     setSending(true);
+    setErrorMessage('');
 
-    // Prepare mailto fallback
-    setTimeout(() => {
-      setSending(false);
-      setSentSuccess(true);
-      triggerSpiderSense('SIGNAL TRANSMITTED!');
-      confetti({
-        particleCount: 70,
-        spread: 90,
-        origin: { y: 0.6 },
-        colors: ['#ef233c', '#00d2ff', '#ffe600'],
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+        }),
       });
 
-      const subject = encodeURIComponent(`Spider-Signal Transmission from ${formState.name}`);
-      const body = encodeURIComponent(`From: ${formState.name} (${formState.email})\n\nMessage:\n${formState.message}`);
-      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    }, 600);
+      if (response.ok) {
+        setSentSuccess(true);
+        setFormState({ name: '', email: '', message: '' });
+        triggerSpiderSense('SIGNAL DELIVERED TO ALQAMAR!');
+        confetti({
+          particleCount: 75,
+          spread: 90,
+          origin: { y: 0.6 },
+          colors: ['#ef233c', '#00d2ff', '#ffe600'],
+        });
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setErrorMessage(data?.errors?.[0]?.message || 'Signal transmission failed. Please reach out directly via email.');
+      }
+    } catch {
+      setErrorMessage('Network error while broadcasting signal. Please email alqamarziaul12@gmail.com directly.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const socials = [
@@ -243,25 +263,48 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={sending}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#ef233c] to-[#d90429] hover:from-[#d90429] hover:to-[#ef233c] text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[#ef233c]/25 active:scale-[0.99] disabled:opacity-60"
-              >
-                {sending ? (
-                  <span>Broadcasting Signal...</span>
-                ) : sentSuccess ? (
-                  <>
-                    <Check className="w-4 h-4 text-white" />
-                    <span>Signal Transmitted! Opening Client...</span>
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    <span>Transmit Signal (Send Message)</span>
-                  </>
-                )}
-              </button>
+              {errorMessage && (
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono-tech">
+                  ⚠️ {errorMessage}
+                </div>
+              )}
+
+              {sentSuccess ? (
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-2">
+                  <div className="flex items-center justify-center gap-2 text-emerald-400 font-bold text-sm">
+                    <Check className="w-5 h-5" />
+                    <span>Signal Received At Spider-HQ!</span>
+                  </div>
+                  <p className="text-xs text-zinc-400">
+                    Your transmission landed safely in my inbox. I'll get back to you shortly!
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSentSuccess(false)}
+                    className="text-xs text-[#ef233c] hover:underline font-mono-tech pt-1"
+                  >
+                    + Send Another Transmission
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#ef233c] to-[#d90429] hover:from-[#d90429] hover:to-[#ef233c] text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[#ef233c]/25 active:scale-[0.99] disabled:opacity-60 cursor-pointer"
+                >
+                  {sending ? (
+                    <span className="flex items-center gap-2">
+                      <Radio className="w-4 h-4 animate-pulse" />
+                      Broadcasting Signal...
+                    </span>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Transmit Signal (Send Message)</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </form>
         </div>
