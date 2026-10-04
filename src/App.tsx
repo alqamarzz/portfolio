@@ -12,6 +12,7 @@ import { SpiderSense } from './components/SpiderSense';
 import { ScrollWebProgress } from './components/ScrollWebProgress';
 import { WebCursor } from './components/WebCursor';
 import { SpideyToast, useSpideyToast } from './components/SpideyToast';
+import { ThemeToggleFloat } from './components/ThemeToggleFloat';
 
 export function App() {
   const [theme, setTheme] = useState<'classic' | 'miles' | '2099' | 'gwen'>('classic');
@@ -95,6 +96,14 @@ export function App() {
         <ExperienceSection />
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
       </main>
+
+      {/* Floating Theme Mode Switcher in bottom-left */}
+      <ThemeToggleFloat
+        isLight={isLight}
+        setIsLight={setIsLight}
+        setTheme={setTheme}
+        triggerSpiderSense={triggerSpiderSense}
+      />
 
       <Footer />
     </div>

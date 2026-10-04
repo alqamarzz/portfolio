@@ -217,16 +217,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Light / Dark Mode Toggle */}
+          {/* Prominent Light / Dark Mode Toggle Pill */}
           <button
             onClick={toggleThemeMode}
-            className="p-1.5 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
-            title={isLight ? 'Switch to Dark Mode (Stealth)' : 'Switch to Light Mode (Future Foundation)'}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-mono-tech transition-all cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+            title={isLight ? 'Switch to Stealth Dark Mode' : 'Switch to Ghost-Spider Light Mode'}
           >
             {isLight ? (
-              <Moon className="w-4 h-4 text-purple-400 hover:text-purple-300" />
+              <>
+                <Moon className="w-3.5 h-3.5 text-purple-600 fill-purple-600" />
+                <span className="font-bold text-zinc-800">DARK</span>
+              </>
             ) : (
-              <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" />
+              <>
+                <Sun className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                <span className="font-bold text-amber-300">LIGHT</span>
+              </>
             )}
           </button>
 
