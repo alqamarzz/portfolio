@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { sound } from '../utils/audio';
 import { GithubIcon } from './Icons';
 import { 
@@ -8,9 +8,10 @@ import {
   TrendingUp, 
   CreditCard, 
   MoveRight, 
-  Compass, 
   Sparkles,
-  ArrowUpRight
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 interface ProjectsSectionProps {
@@ -18,7 +19,8 @@ interface ProjectsSectionProps {
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderSense }) => {
-  const [activeCategory, setActiveCategory] = useState<'All' | 'Tactile UI' | 'Web3' | 'Systems'>('All');
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Interactive Solana scrubber state
   const [scrubX, setScrubX] = useState<number | null>(null);
@@ -50,6 +52,35 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
 
   const handleCardMouseLeave = () => {
     setCardTilt({ rotateX: 0, rotateY: 0 });
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    sound.playClick();
+    if (!scrollRef.current) return;
+    const scrollAmount = 400;
+    scrollRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const itemWidth = 380;
+    const index = Math.round(scrollLeft / itemWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), projects.length - 1));
+  };
+
+  const scrollToIndex = (index: number) => {
+    sound.playClick();
+    if (!scrollRef.current) return;
+    const itemWidth = 400;
+    scrollRef.current.scrollTo({
+      left: index * itemWidth,
+      behavior: 'smooth'
+    });
+    setActiveIndex(index);
   };
 
   const projects = [
@@ -109,25 +140,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       icon: MoveRight,
       type: 'swipe',
     },
-    {
-      id: 'zerodha-landing',
-      title: 'Zerodha Trading Terminal UI',
-      missionCode: 'MISSION #TRD-88',
-      badge: 'Fintech Engine',
-      category: 'Systems',
-      description: 'High-density precision trading terminal interface. Features instant order slips, responsive depth ladders, dark-mode optimizations, and real-time state synchronization.',
-      stack: ['React', 'Tailwind CSS', 'State Management', 'TypeScript'],
-      github: 'https://github.com/alqamarzz/zerodha_landing',
-      demo: 'https://zerodha-landing-ebon.vercel.app',
-      color: '#06d6a0',
-      icon: Compass,
-      type: 'terminal',
-    },
   ];
-
-  const filteredProjects = activeCategory === 'All' 
-    ? projects 
-    : projects.filter(p => p.category === activeCategory);
 
   return (
     <section id="projects" className="relative py-24 px-4 max-w-6xl mx-auto">
@@ -135,63 +148,71 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       <div className="absolute top-1/3 -right-20 w-72 h-72 bg-[#ef233c]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ef233c]/10 border border-[#ef233c]/30 text-[#ef233c] text-xs font-mono-tech mb-3 uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Classified Missions</span>
+            <span>Classified Missions · Tactile Labs</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
             <span className="text-inherit">Shipped </span><span className="text-[#ef233c] font-comic">Missions</span> & Craft
           </h2>
           <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-2">
-            Selected projects demonstrating physical micro-interactions, responsive architecture, and production polish.
+            Interactive micro-interaction specimens and tactile systems engineered with spring physics and 60fps polish.
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl glass-hud border border-white/10 self-start md:self-auto">
-          {(['All', 'Tactile UI', 'Web3', 'Systems'] as const).map((cat) => (
+        {/* Carousel Motion Controls */}
+        <div className="flex items-center gap-3 self-start md:self-auto">
+          <span className="text-xs font-mono-tech text-zinc-500 hidden sm:inline">
+            SWIPE OR NAVIGATE
+          </span>
+          <div className="flex items-center gap-2">
             <button
-              key={cat}
-              onClick={() => {
-                sound.playClick();
-                setActiveCategory(cat);
-              }}
-              className={`px-3 py-1.5 text-xs font-mono-tech rounded-lg transition-all ${
-                activeCategory === cat
-                  ? 'bg-[#ef233c] text-white font-medium shadow-md shadow-[#ef233c]/30'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              onClick={() => scroll('left')}
+              className="p-2.5 rounded-full glass-hud border border-white/10 hover:border-[#ef233c] text-zinc-300 hover:text-white transition active:scale-90 cursor-pointer shadow-sm"
+              title="Previous Mission"
+              aria-label="Previous Mission"
             >
-              {cat}
+              <ChevronLeft className="w-4 h-4" />
             </button>
-          ))}
+            <button
+              onClick={() => scroll('right')}
+              className="p-2.5 rounded-full glass-hud border border-white/10 hover:border-[#ef233c] text-zinc-300 hover:text-white transition active:scale-90 cursor-pointer shadow-sm"
+              title="Next Mission"
+              aria-label="Next Mission"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project, idx) => {
-            const Icon = project.icon;
+      {/* Projects One-Line Motion Track */}
+      <div 
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex items-stretch gap-6 overflow-x-auto pb-8 pt-2 scroll-smooth no-scrollbar snap-x snap-mandatory px-1"
+      >
+        {projects.map((project, idx) => {
+          const Icon = project.icon;
 
-            return (
-              <motion.article
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="group rounded-2xl glass-hud border border-white/10 hover:border-[#ef233c]/50 p-5 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_12px_36px_rgba(239,35,60,0.15)] hover:-translate-y-1 relative overflow-hidden"
-              >
+          return (
+            <motion.article
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              className="w-[85vw] sm:w-[380px] md:w-[410px] shrink-0 snap-center rounded-2xl glass-hud border border-white/10 hover:border-[#ef233c]/50 p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_12px_36px_rgba(239,35,60,0.15)] relative overflow-hidden group"
+            >
+              <div>
                 {/* Top Mission Tag & Category */}
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className="font-comic text-xs tracking-wider text-[#ef233c] uppercase">
                     {project.missionCode}
                   </span>
-                  <span className="text-[11px] font-mono-tech px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-zinc-300">
+                  <span className="text-[11px] font-mono-tech px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-zinc-300">
                     {project.badge}
                   </span>
                 </div>
@@ -320,14 +341,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                         </div>
                       </div>
                     )}
-
-                    {/* Terminal preview */}
-                    {project.type === 'terminal' && (
-                      <div className="w-full text-left font-mono-tech text-[10px] bg-black/60 p-2.5 rounded-lg border border-white/10">
-                        <div className="text-emerald-400 font-semibold">BUY 50x @ $184.20 EXECUTED</div>
-                        <div className="text-zinc-500 mt-0.5">LATENCY: 4.2ms · NO REQUOTE</div>
-                      </div>
-                    )}
                   </div>
 
                   <div className="flex items-center justify-between z-10 text-[11px] font-mono-tech text-zinc-500 group-hover:text-zinc-300 transition-colors pointer-events-none">
@@ -338,14 +351,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
 
                 {/* Project Title & Description */}
                 <div>
-                  <h3 className="font-heading text-lg font-bold group-hover:text-[#ef233c] transition-colors mb-2">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold group-hover:text-[#ef233c] transition-colors mb-2">
                     {project.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-3">
                     {project.description}
                   </p>
                 </div>
+              </div>
 
+              <div>
                 {/* Tech Stack Pills */}
                 <div className="flex flex-wrap gap-1.5 mb-5 pt-3 border-t border-white/5">
                   {project.stack.map((item) => (
@@ -386,10 +401,27 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                     <span>Live Demo</span>
                   </a>
                 </div>
-              </motion.article>
-            );
-          })}
-        </AnimatePresence>
+              </div>
+            </motion.article>
+          );
+        })}
+      </div>
+
+      {/* Indicator dots for the one line in motion */}
+      <div className="flex items-center justify-center gap-2 pt-2">
+        {projects.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollToIndex(i)}
+            className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+              activeIndex === i 
+                ? 'w-8 bg-[#ef233c]' 
+                : 'w-2 bg-white/20 hover:bg-white/40'
+            }`}
+            title={`Scroll to project ${i + 1}`}
+            aria-label={`Scroll to project ${i + 1}`}
+          />
+        ))}
       </div>
     </section>
   );

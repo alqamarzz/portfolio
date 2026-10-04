@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutBento } from './components/AboutBento';
 import { ProjectsSection } from './components/ProjectsSection';
+import { HackathonsSection } from './components/HackathonsSection';
 import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -90,6 +91,7 @@ export function App() {
         <Hero triggerSpiderSense={triggerSpiderSense} isLight={isLight} />
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
         <ProjectsSection triggerSpiderSense={triggerSpiderSense} />
+        <HackathonsSection triggerSpiderSense={triggerSpiderSense} />
         <ExperienceSection />
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
       </main>
