@@ -55,7 +55,7 @@ export const ExperienceSection: React.FC = () => {
           <span>Patrol History</span>
         </motion.div>
 
-        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
           Battle-Tested <span className="text-[#ef233c] font-comic">Experience</span>
         </h2>
         <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-2">
@@ -85,7 +85,7 @@ export const ExperienceSection: React.FC = () => {
             <div className="rounded-2xl glass-hud p-6 sm:p-7 border border-white/10 group-hover:border-[#ef233c]/40 transition-all duration-300">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                 <div>
-                  <h3 className="font-heading text-xl font-bold text-white group-hover:text-[#ef233c] transition-colors">
+                  <h3 className="font-heading text-xl font-bold group-hover:text-[#ef233c] transition-colors">
                     {exp.role}
                   </h3>
                   <div className="text-zinc-300 text-sm font-medium mt-0.5">

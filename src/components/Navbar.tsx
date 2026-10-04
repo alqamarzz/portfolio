@@ -132,7 +132,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
                 className={`relative px-2.5 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full transition-all duration-200 cursor-pointer ${
-                  isActive ? 'font-semibold text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                  isActive
+                    ? 'font-semibold text-white'
+                    : isLight
+                    ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-900/5'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 {isActive && (
@@ -160,7 +164,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 sound.playClick();
                 setSuitMenuOpen(!suitMenuOpen);
               }}
-              className="p-1.5 rounded-full hover:bg-white/10 text-zinc-300 hover:text-white transition flex items-center gap-1.5 text-xs font-mono-tech cursor-pointer"
+              className={`p-1.5 rounded-full transition flex items-center gap-1.5 text-xs font-mono-tech cursor-pointer ${
+                isLight ? 'text-slate-700 hover:bg-slate-900/5 hover:text-slate-900' : 'text-zinc-300 hover:bg-white/10 hover:text-white'
+              }`}
               title="Switch Spider Suit"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#ef233c]" />
@@ -176,9 +182,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-52 py-2 rounded-xl glass-hud border border-white/10 shadow-2xl z-50 text-xs"
+                  className={`absolute right-0 mt-2 w-52 py-2 rounded-xl glass-hud border shadow-2xl z-50 text-xs ${
+                    isLight ? 'border-slate-200 bg-white/95 text-slate-800' : 'border-white/10 text-zinc-300'
+                  }`}
                 >
-                  <div className="px-3 py-1 font-comic text-zinc-400 uppercase text-[11px] tracking-wider border-b border-white/5">
+                  <div className={`px-3 py-1 font-comic uppercase text-[11px] tracking-wider border-b ${
+                    isLight ? 'text-slate-400 border-slate-200' : 'text-zinc-400 border-white/5'
+                  }`}>
                     Select Spider Suit
                   </div>
                   {(['classic', 'miles', '2099', 'gwen'] as const).map((suit) => (
@@ -196,8 +206,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }
                         setSuitMenuOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-white/5 transition cursor-pointer ${
-                        theme === suit ? 'font-semibold text-white' : 'text-zinc-400'
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between transition cursor-pointer ${
+                        theme === suit
+                          ? isLight
+                            ? 'font-semibold text-slate-900 bg-slate-100'
+                            : 'font-semibold text-white bg-white/5'
+                          : isLight
+                            ? 'text-slate-600 hover:bg-slate-100'
+                            : 'text-zinc-400 hover:bg-white/5'
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -242,7 +258,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               sound.playSpiderSense();
               triggerSpiderSense();
             }}
-            className="p-1.5 rounded-full hover:bg-white/10 text-yellow-400 hover:text-yellow-300 transition cursor-pointer"
+            className={`p-1.5 rounded-full transition cursor-pointer ${
+              isLight ? 'hover:bg-slate-900/5 text-amber-500' : 'hover:bg-white/10 text-yellow-400 hover:text-yellow-300'
+            }`}
             title="Trigger Spider-Sense"
           >
             <Radio className="w-4 h-4 animate-pulse" />
@@ -251,13 +269,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Sound Toggle */}
           <button
             onClick={toggleSound}
-            className="p-1.5 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
+            className={`p-1.5 rounded-full transition cursor-pointer ${
+              isLight ? 'hover:bg-slate-900/5 text-slate-600 hover:text-slate-900' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+            }`}
             title={soundEnabled ? 'Mute SFX' : 'Enable SFX'}
           >
             {soundEnabled ? (
               <Volume2 className="w-4 h-4 text-[#00d2ff]" />
             ) : (
-              <VolumeX className="w-4 h-4 text-zinc-500" />
+              <VolumeX className="w-4 h-4 text-zinc-400" />
             )}
           </button>
 
@@ -267,7 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               sound.playThwip();
               handleNavClick('contact');
             }}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-semibold shadow-sm transition hover:shadow-[0_0_15px_rgba(239,35,60,0.5)] cursor-pointer"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ef233c] hover:bg-[#d90429] !text-white text-xs font-semibold shadow-sm transition hover:shadow-[0_0_15px_rgba(239,35,60,0.5)] cursor-pointer"
           >
             <Send className="w-3 h-3" />
             <span>Connect</span>

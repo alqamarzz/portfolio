@@ -54,7 +54,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
           <Zap className="w-3.5 h-3.5" />
           <span>Origin Story</span>
         </motion.div>
-        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
           Every Hero Has An{' '}
           <span className="text-[#ef233c] font-comic tracking-normal">Origin</span>
         </h2>
@@ -84,13 +84,13 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-bold text-white">The Design Engineer</h3>
+                <h3 className="font-heading text-lg font-bold">The Design Engineer</h3>
                 <p className="text-xs text-zinc-400 font-mono-tech">Crafting Tactile Digital Worlds</p>
               </div>
             </div>
 
             <p className="text-zinc-300 text-sm sm:text-base leading-relaxed mb-3">
-              I'm <strong className="text-white font-bold">Alqamar</strong>, a frontend engineer and
+              I'm <strong className="font-bold">Alqamar</strong>, a frontend engineer and
               interface designer bridging the gap between pure code and intuitive human emotion.
             </p>
             <p className="text-zinc-400 text-sm leading-relaxed">
@@ -126,7 +126,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
           </div>
 
           <div className="my-5">
-            <span className="font-comic text-2xl sm:text-3xl text-white tracking-wide block leading-tight mb-2">
+            <span className="font-comic text-2xl sm:text-3xl tracking-wide block leading-tight mb-2">
               "WITH GREAT CODE COMES GREAT RESPONSIBILITY"
             </span>
             <span className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
@@ -162,7 +162,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
               <MapPin className="w-3.5 h-3.5 text-[#ef233c]" />
               <span className="font-mono-tech">Base Coordinates</span>
             </div>
-            <h4 className="font-heading text-2xl font-bold text-white">India (IST)</h4>
+            <h4 className="font-heading text-2xl font-bold">India (IST)</h4>
             <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
               Seamlessly collaborating across US, EU, and SEA time zones.
             </p>
@@ -187,7 +187,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
                 <Cpu className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-bold text-white">Web-Shooter Tech Arsenal</h3>
+                <h3 className="font-heading text-lg font-bold">Web-Shooter Tech Arsenal</h3>
                 <p className="text-xs text-zinc-400 font-mono-tech">Languages, Frameworks & Tools</p>
               </div>
             </div>
@@ -239,7 +239,7 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
                     </span>
                   </div>
                   <div>
-                    <div className="font-semibold text-white text-sm leading-tight">{skill.name}</div>
+                    <div className="font-semibold text-sm leading-tight">{skill.name}</div>
                     <div className="text-[10px] font-mono-tech text-zinc-500 uppercase tracking-wider mt-0.5">
                       {skill.category}
                     </div>

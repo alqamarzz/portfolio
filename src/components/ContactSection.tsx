@@ -110,7 +110,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
           <span>Spider-Signal Frequency</span>
         </motion.div>
 
-        <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
           Activate The <span className="text-[#ef233c] font-comic">Spider-Signal</span>
         </h2>
         <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-3">
@@ -168,7 +168,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
                       <Icon className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-white text-xs sm:text-sm font-semibold group-hover:text-[#ef233c] transition-colors">
+                      <div className="text-xs sm:text-sm font-semibold group-hover:text-[#ef233c] transition-colors">
                         {item.name}
                       </div>
                       <div className="text-[11px] font-mono-tech text-zinc-500">
@@ -193,7 +193,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#ef233c] animate-pulse" />
-                <span className="font-comic text-sm tracking-wider text-white uppercase">
+                <span className="font-comic text-sm tracking-wider uppercase">
                   Encrypted Transmission Terminal
                 </span>
               </div>

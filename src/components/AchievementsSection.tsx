@@ -65,7 +65,7 @@ export const AchievementsSection: React.FC = () => {
           <span>Badge Collection</span>
         </motion.div>
 
-        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
           Earned <span className="font-comic text-[#ef233c]">Badges</span> & Honours
         </h2>
         <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-3">
@@ -116,7 +116,7 @@ export const AchievementsSection: React.FC = () => {
                 </span>
               </div>
 
-              <h3 className="font-heading text-base sm:text-lg font-bold text-white mb-2 group-hover:text-white transition-colors">
+              <h3 className="font-heading text-base sm:text-lg font-bold mb-2 group-hover:text-[#ef233c] transition-colors">
                 {ach.title}
               </h3>
               <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">

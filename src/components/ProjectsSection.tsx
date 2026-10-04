@@ -141,8 +141,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
             <Sparkles className="w-3.5 h-3.5" />
             <span>Classified Missions</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Shipped <span className="text-[#ef233c] font-comic">Missions</span> & Craft
+          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
+            <span className="text-inherit">Shipped </span><span className="text-[#ef233c] font-comic">Missions</span> & Craft
           </h2>
           <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-2">
             Selected projects demonstrating physical micro-interactions, responsive architecture, and production polish.
@@ -338,7 +338,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
 
                 {/* Project Title & Description */}
                 <div>
-                  <h3 className="font-heading text-lg font-bold text-white group-hover:text-[#ef233c] transition-colors mb-2">
+                  <h3 className="font-heading text-lg font-bold group-hover:text-[#ef233c] transition-colors mb-2">
                     {project.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-3">

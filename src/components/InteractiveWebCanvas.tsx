@@ -224,7 +224,7 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme, isLight 
       window.removeEventListener('click', handleClick);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [theme]);
+  }, [theme, isLight]);
 
   return (
     <canvas
