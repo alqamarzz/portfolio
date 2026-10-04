@@ -8,7 +8,8 @@ export default defineConfig(({ command }) => ({
     tailwindcss(),
     react(),
   ],
-  base: command === 'build' ? '/portfolio/' : '/',
+  // On Vercel or local builds use '/', on GitHub Pages CI use '/portfolio/'
+  base: process.env.VERCEL ? '/' : (process.env.GITHUB_ACTIONS === 'true' ? '/portfolio/' : '/'),
   build: {
     rollupOptions: {
       output: {
