@@ -124,7 +124,7 @@ export const WebCursor: React.FC<WebCursorProps> = ({ theme, isLight = false }) 
       document.removeEventListener('mouseenter', onMouseEnter);
       cancelAnimationFrame(rafId);
     };
-  }, [theme]);
+  }, [theme, isLight]);
 
   const accent = getAccentColor();
 

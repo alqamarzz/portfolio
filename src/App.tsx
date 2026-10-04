@@ -89,7 +89,7 @@ export function App() {
 
       {/* Page Sections */}
       <main className="relative z-10">
-        <Hero triggerSpiderSense={triggerSpiderSense} />
+        <Hero triggerSpiderSense={triggerSpiderSense} isLight={isLight} />
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
         <ProjectsSection triggerSpiderSense={triggerSpiderSense} />
         <AchievementsSection />

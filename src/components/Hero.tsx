@@ -7,6 +7,7 @@ import { GithubIcon } from './Icons';
 
 interface HeroProps {
   triggerSpiderSense: (msg?: string) => void;
+  isLight?: boolean;
 }
 
 const ROLES = [
@@ -24,7 +25,7 @@ const STATS = [
   { label: 'FPS Target', value: '60', color: '#06d6a0' },
 ];
 
-export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
+export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false }) => {
   const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
@@ -57,8 +58,8 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-hidden">
         <svg
           viewBox="0 0 400 320"
-          className="w-[550px] sm:w-[700px] md:w-[900px] opacity-[0.035] select-none"
-          fill="white"
+          className="w-[550px] sm:w-[700px] md:w-[900px] opacity-[0.035] select-none text-zinc-800 dark:text-white"
+          fill="currentColor"
         >
           {/* Spider-Man Mask silhouette */}
           <ellipse cx="200" cy="155" rx="175" ry="145" />
@@ -134,13 +135,19 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-sm hover:border-[#ef233c]/40 transition cursor-default"
+        className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md mb-8 shadow-sm transition cursor-default ${
+          isLight
+            ? 'bg-slate-100/80 border border-slate-200 hover:border-[#ef233c]/40'
+            : 'bg-white/5 border border-white/10 hover:border-[#ef233c]/40'
+        }`}
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <span className="text-xs sm:text-sm font-medium text-zinc-300">
+        <span className={`text-xs sm:text-sm font-medium ${
+          isLight ? 'text-slate-600' : 'text-zinc-300'
+        }`}>
           Friendly Neighborhood Dev · Available for Work
         </span>
       </motion.div>
@@ -160,16 +167,20 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
         </motion.div>
 
         {/* Giant Name */}
-        <h1 className="flex items-center justify-center flex-wrap font-heading text-5xl sm:text-8xl md:text-[10rem] font-black tracking-tight text-white leading-none">
+        <h1 className="flex items-center justify-center flex-wrap font-heading text-5xl sm:text-8xl md:text-[10rem] font-black tracking-tight leading-none">
           {nameLetters.map((char, i) => (
             <motion.span
               key={i}
               initial={{ y: 60, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.12 + i * 0.05 }}
-              whileHover={{ y: -14, color: '#ef233c', scale: 1.08, rotate: i % 2 === 0 ? 4 : -4 }}
+              whileHover={{ y: -14, scale: 1.08, rotate: i % 2 === 0 ? 4 : -4 }}
               onMouseEnter={() => sound.playClick()}
-              className="inline-block cursor-default transition-colors duration-150"
+              className={`inline-block cursor-default select-none transition-colors duration-150 ${
+                isLight
+                  ? 'text-[#0f172a] hover:text-[#ef233c]'
+                  : 'text-white hover:text-[#ef233c]'
+              }`}
             >
               {char}
             </motion.span>
@@ -188,7 +199,11 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
               className="flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4 text-[#ef233c] animate-pulse shrink-0" />
-              <span className="text-lg sm:text-2xl md:text-3xl font-semibold bg-gradient-to-r from-zinc-100 via-zinc-300 to-zinc-500 bg-clip-text text-transparent whitespace-nowrap">
+              <span className={`text-lg sm:text-2xl md:text-3xl font-semibold bg-clip-text text-transparent whitespace-nowrap ${
+                  isLight
+                    ? 'bg-gradient-to-r from-slate-800 via-slate-600 to-slate-400'
+                    : 'bg-gradient-to-r from-zinc-100 via-zinc-300 to-zinc-500'
+                }`}>
                 {ROLES[roleIndex]}
               </span>
               <Sparkles className="w-4 h-4 text-[#00d2ff] animate-pulse shrink-0" />
@@ -201,7 +216,9 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.55 }}
-          className="max-w-[580px] text-sm sm:text-base text-zinc-400 leading-relaxed mt-2 mb-8 px-2"
+          className={`max-w-[580px] text-sm sm:text-base leading-relaxed mt-2 mb-8 px-2 ${
+            isLight ? 'text-slate-500' : 'text-zinc-400'
+          }`}
         >
           Building polished, tactile web experiences shipped at production quality. Specializing in 
           fluid React interfaces, spring-physics micro-interactions, and high-performance Web3 tooling.
@@ -217,7 +234,11 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
           <a
             href="#projects"
             onClick={() => sound.playClick()}
-            className="px-7 py-3 rounded-full bg-white text-zinc-950 font-bold text-sm hover:bg-zinc-100 transition-all flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95"
+            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 ${
+              isLight
+                ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20'
+                : 'bg-white text-zinc-950 hover:bg-zinc-100 shadow-lg shadow-white/10'
+            }`}
           >
             <Code2 className="w-4 h-4 text-[#ef233c]" />
             <span>Explore Missions</span>
@@ -225,7 +246,11 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
 
           <button
             onClick={fireWebCelebration}
-            className="px-7 py-3 rounded-full glass-hud border border-white/15 text-white font-bold text-sm hover:border-[#ef233c]/60 hover:text-[#ef233c] transition-all flex items-center gap-2 active:scale-95 group"
+            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 group ${
+              isLight
+                ? 'bg-white border border-slate-200 text-slate-900 hover:border-[#ef233c]/60 hover:text-[#ef233c] shadow-sm'
+                : 'glass-hud border border-white/15 text-white hover:border-[#ef233c]/60 hover:text-[#ef233c]'
+            }`}
           >
             <Flame className="w-4 h-4 text-[#ef233c] group-hover:rotate-12 transition-transform" />
             <span>Thwip Web!</span>
@@ -236,7 +261,11 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense }) => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => sound.playClick()}
-            className="px-7 py-3 rounded-full glass-hud border border-white/15 text-zinc-300 font-bold text-sm hover:border-white/30 hover:text-white transition-all flex items-center gap-2 active:scale-95"
+            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 ${
+              isLight
+                ? 'bg-white border border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900 shadow-sm'
+                : 'glass-hud border border-white/15 text-zinc-300 hover:border-white/30 hover:text-white'
+            }`}
           >
             <GithubIcon className="w-4 h-4" />
             <span>GitHub</span>

@@ -127,18 +127,22 @@
   box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.06);
 }
 
-.light h1, .light h2, .light h3, .light h4 {
-  color: #0f172a !important;
+/* Headings in light mode — use :not to exclude those already using explicit color classes */
+.light h1:not([class*="text-["]),
+.light h2:not([class*="text-["]),
+.light h3:not([class*="text-["]),
+.light h4:not([class*="text-["]) {
+  color: #0f172a;
 }
 
 .light p {
-  color: #475569 !important;
+  color: #475569;
 }
 
-.light .text-white {
-  color: #0f172a !important;
-}
-
+/* Map dark-mode text colors to readable light-mode equivalents.
+   IMPORTANT: No blanket .text-white override; it was breaking interactive
+   components (hero name letters, buttons, etc.). Instead we scope it to
+   elements that don't already carry theme-aware classes. */
 .light .text-zinc-100 {
   color: #0f172a !important;
 }
@@ -175,6 +179,17 @@
   border-color: rgba(15, 23, 42, 0.08) !important;
 }
 
+/* Light mode surfaces: dark cards → light cards */
+.light .bg-black\/40,
+.light .bg-black\/60 {
+  background-color: rgba(241, 245, 249, 0.9) !important;
+}
+
+.light .bg-\[\#141926\],
+.light .bg-gradient-to-b.from-\[\#141926\] {
+  background: rgba(241, 245, 249, 0.95) !important;
+}
+
 /* Light mode inputs */
 .light input, .light textarea {
   background-color: rgba(255, 255, 255, 0.95) !important;
@@ -186,12 +201,29 @@
   color: #94a3b8 !important;
 }
 
-/* Maintain colored buttons text white */
-.light .bg-\[\#ef233c\], 
+/* Maintain white text on colored action buttons */
+.light .bg-\[\#ef233c\],
 .light .bg-\[\#ef233c\] *,
+.light .bg-gradient-to-r.from-\[\#ef233c\],
+.light .bg-gradient-to-r.from-\[\#ef233c\] *,
 .light button[type="submit"],
 .light button[type="submit"] * {
   color: #ffffff !important;
+}
+
+/* Keep Navbar HUD chrome readable in light mode */
+.light .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Timeline vertical line in light mode */
+.light .border-l-2.border-white\/10 {
+  border-left-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+/* Footer border */
+.light .border-t.border-white\/10 {
+  border-top-color: rgba(15, 23, 42, 0.08) !important;
 }
 
 /* Spider Eye Squint Animation */
