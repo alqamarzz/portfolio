@@ -3,13 +3,12 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     tailwindcss(),
     react(),
   ],
-  // Set base to repo name for GitHub Pages
-  base: '/spiderman-portfolio/',
+  base: command === 'build' ? '/spiderman-portfolio/' : '/',
   build: {
     rollupOptions: {
       output: {
@@ -27,4 +26,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
