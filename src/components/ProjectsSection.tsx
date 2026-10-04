@@ -11,7 +11,8 @@ import {
   Sparkles,
   ArrowUpRight,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Activity
 } from 'lucide-react';
 
 interface ProjectsSectionProps {
@@ -139,6 +140,20 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       color: '#a855f7',
       icon: MoveRight,
       type: 'swipe',
+    },
+    {
+      id: 'solana-ecosystem-tracker',
+      title: 'Solana Telemetry Oracle',
+      missionCode: 'MISSION #ORACLE-24',
+      badge: 'Automated CI/CD',
+      category: 'Web3 / Automation',
+      description: 'Automated daily time-series telemetry engine tracking Solana Mainnet TPS, DeFi TVL, price volatility, and epoch metrics via scheduled GitHub Actions Git-scraping.',
+      stack: ['GitHub Actions', 'Solana RPC', 'TypeScript', 'DeFiLlama API', 'Cron'],
+      github: 'https://github.com/alqamarzz/solana-ecosystem-tracker',
+      demo: 'https://github.com/alqamarzz/solana-ecosystem-tracker#readme',
+      color: '#14F195',
+      icon: Activity,
+      type: 'oracle',
     },
   ];
 
@@ -338,6 +353,25 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                         <span className="text-zinc-300 font-mono-tech text-[11px]">Swipe Action</span>
                         <div className="px-2.5 py-1 rounded bg-[#a855f7] text-white text-[10px] font-bold shadow">
                           ARCHIVE
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Oracle Telemetry Preview */}
+                    {project.type === 'oracle' && (
+                      <div className="w-full text-left font-mono-tech text-[10px] bg-black/60 p-2.5 rounded-lg border border-[#14F195]/20 flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-zinc-400">TELEMETRY:</span>
+                          <span className="text-[#14F195] font-semibold flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#14F195] animate-ping" />
+                            CRON 00:00 UTC
+                          </span>
+                        </div>
+                        <div className="text-zinc-300 font-bold text-[11px] pt-0.5">
+                          SOL: $121.10 · TVL: $6.73B · 4,427 TPS
+                        </div>
+                        <div className="text-zinc-500 text-[9px]">
+                          DATA PIPELINE · 100% AUTOMATED GITHUB ACTION
                         </div>
                       </div>
                     )}
