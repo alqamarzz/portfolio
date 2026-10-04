@@ -62,7 +62,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'High-frequency interactive token price scrubber built for Solana traders. Features sub-millisecond cursor tracking, momentum scrubbing, dynamic area fills, and live tooltip metrics.',
       stack: ['Solana', 'TypeScript', 'Canvas / SVG', 'Tailwind CSS'],
       github: 'https://github.com/alqamarzz/solana-scrub-chart',
-      demo: 'https://github.com/alqamarzz/solana-scrub-chart',
+      demo: 'https://solana-scrub-chart.vercel.app',
       color: '#00d2ff',
       icon: TrendingUp,
       type: 'chart',
@@ -76,7 +76,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'Physics-based multi-layered card swipe engine. Incorporates multi-touch dragging, velocity threshold releases, elastic spring recoil, and fragmented card-piece transitions.',
       stack: ['React', 'Framer Motion', 'Gesture API', 'TypeScript'],
       github: 'https://github.com/alqamarzz/card-pieces-swipe-deck',
-      demo: 'https://github.com/alqamarzz/card-pieces-swipe-deck',
+      demo: 'https://card-pieces-swipe-deck.vercel.app',
       color: '#ef233c',
       icon: Layers,
       type: 'cards',
@@ -90,7 +90,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'Tactile 3D banking card with real-time CVV flipping, dynamic holographic foil reflection mapped to mouse angle, chip specular glare, and synchronized form typing.',
       stack: ['React', 'CSS 3D Transforms', 'TypeScript', 'Tailwind'],
       github: 'https://github.com/alqamarzz/Credit_Card',
-      demo: 'https://github.com/alqamarzz/Credit_Card',
+      demo: 'https://creditcard-five-phi.vercel.app',
       color: '#ffd166',
       icon: CreditCard,
       type: 'card3d',
@@ -104,7 +104,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'Mobile-first swipe-to-reveal row action component mimicking native iOS/Android lists. Engineered with rubber-banding resistance, haptic ticks, and action triggers.',
       stack: ['React', 'Framer Motion', 'Tailwind CSS', 'TypeScript'],
       github: 'https://github.com/alqamarzz/swipe-action-row',
-      demo: 'https://github.com/alqamarzz/swipe-action-row',
+      demo: 'https://swipe-action-row.vercel.app',
       color: '#a855f7',
       icon: MoveRight,
       type: 'swipe',
@@ -118,7 +118,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'High-density precision trading terminal interface. Features instant order slips, responsive depth ladders, dark-mode optimizations, and real-time state synchronization.',
       stack: ['React', 'Tailwind CSS', 'State Management', 'TypeScript'],
       github: 'https://github.com/alqamarzz/zerodha_landing',
-      demo: 'https://github.com/alqamarzz/zerodha_landing',
+      demo: 'https://zerodha-landing-ebon.vercel.app',
       color: '#06d6a0',
       icon: Compass,
       type: 'terminal',
@@ -377,12 +377,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                     rel="noopener noreferrer"
                     onClick={() => {
                       sound.playThwip();
-                      triggerSpiderSense(`Opening ${project.title}`);
+                      triggerSpiderSense(`Launching ${project.title}`);
                     }}
-                    className="flex-1 py-2 px-3 rounded-lg bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow-sm"
+                    className="flex-1 py-2 px-3 rounded-lg bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow-sm hover:shadow-[0_0_12px_rgba(239,35,60,0.5)] cursor-pointer"
+                    title={`Open live website: ${project.demo}`}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>View Spec</span>
+                    <span>Live Demo</span>
                   </a>
                 </div>
               </motion.article>

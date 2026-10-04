@@ -41,7 +41,6 @@ export function App() {
   return (
     <div
       className={`relative min-h-screen transition-colors duration-700 selection:bg-[#ef233c] selection:text-white ${getThemeClass()}`}
-      style={{ cursor: 'none' }}   // hide native cursor since WebCursor takes over
     >
       {/* Custom web-thread cursor */}
       <WebCursor theme={theme} />
