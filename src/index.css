@@ -5,10 +5,29 @@
     --spider-red: #ef233c;
     --spider-red-glow: rgba(239, 35, 60, 0.4);
     --spider-blue: #00d2ff;
-    --spider-blue-deep: #1d4ed8;
     --spider-dark: #07090e;
     --spider-dark-card: #0d111a;
     --spider-dark-border: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Theme: Miles Morales Spider-Verse */
+  .theme-miles {
+    --spider-red: #ff0055;
+    --spider-red-glow: rgba(255, 0, 85, 0.5);
+    --spider-blue: #ffe600;
+    --spider-dark: #06070a;
+    --spider-dark-card: #0a0c10;
+    --spider-dark-border: rgba(255, 0, 85, 0.15);
+  }
+
+  /* Theme: Spider-Man 2099 Cyberpunk */
+  .theme-2099 {
+    --spider-red: #00e5ff;
+    --spider-red-glow: rgba(0, 229, 255, 0.5);
+    --spider-blue: #a855f7;
+    --spider-dark: #04060c;
+    --spider-dark-card: #080b14;
+    --spider-dark-border: rgba(0, 229, 255, 0.15);
   }
 
   * {
@@ -24,7 +43,7 @@
 /* Custom Comic & Spidey Styles */
 .font-comic {
   font-family: 'Bangers', cursive;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .font-mono-tech {
@@ -37,13 +56,16 @@
 
 /* Halftone Comic Pattern Overlay */
 .comic-halftone {
-  background-image: radial-gradient(rgba(239, 35, 60, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(239, 35, 60, 0.15) 1.5px, transparent 1.5px);
   background-size: 16px 16px;
 }
 
-.comic-dots-subtle {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 14px 14px;
+.theme-miles .comic-halftone {
+  background-image: radial-gradient(rgba(255, 0, 85, 0.18) 1.5px, transparent 1.5px);
+}
+
+.theme-2099 .comic-halftone {
+  background-image: radial-gradient(rgba(0, 229, 255, 0.15) 1.5px, transparent 1.5px);
 }
 
 /* Web Grid Background */
@@ -54,39 +76,6 @@
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Spider-Sense Tingling Animation */
-@keyframes spiderSenseTingle {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-.spider-sense-active {
-  animation: spiderSenseTingle 0.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-/* Spider Glow */
-.glow-spidey-red {
-  box-shadow: 0 0 25px rgba(239, 35, 60, 0.35);
-}
-
-.glow-spidey-blue {
-  box-shadow: 0 0 25px rgba(0, 210, 255, 0.35);
-}
-
-.text-glow-red {
-  text-shadow: 0 0 15px rgba(239, 35, 60, 0.6);
-}
-
-.text-glow-blue {
-  text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
-}
-
 /* Glassmorphism Spider HUD */
 .glass-hud {
   background: rgba(13, 17, 26, 0.75);
@@ -95,14 +84,42 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.glass-card-hover {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.theme-miles .glass-hud {
+  background: rgba(10, 12, 18, 0.85);
+  border-color: rgba(255, 0, 85, 0.15);
 }
 
-.glass-card-hover:hover {
-  transform: translateY(-3px);
-  border-color: rgba(239, 35, 60, 0.4);
-  box-shadow: 0 12px 30px -10px rgba(239, 35, 60, 0.2);
+.theme-2099 .glass-hud {
+  background: rgba(8, 11, 20, 0.85);
+  border-color: rgba(0, 229, 255, 0.15);
+}
+
+/* Spider Eye Squint Animation */
+@keyframes eyeSquint {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.4);
+  }
+}
+
+.spider-eye-blink {
+  animation: eyeSquint 0.25s ease-in-out;
+}
+
+/* Float Animation */
+@keyframes comicFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+.animate-comic-float {
+  animation: comicFloat 4s ease-in-out infinite;
 }
 
 /* Custom Scrollbar */
