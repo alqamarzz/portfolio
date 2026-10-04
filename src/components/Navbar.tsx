@@ -3,12 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '../utils/audio';
 import { 
   Sparkles, 
-  Volume2, 
-  VolumeX, 
   Send, 
-  Radio,
-  Sun,
-  Moon
+  Sun, 
+  Moon 
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -48,13 +45,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-
-  const toggleSound = () => {
-    const next = !soundEnabled;
-    setSoundEnabled(next);
-    sound.enabled = next;
-    if (next) sound.playThwip();
   };
 
   const toggleThemeMode = () => {
@@ -249,35 +239,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Sun className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                 <span className="font-bold text-amber-300">LIGHT</span>
               </>
-            )}
-          </button>
-
-          {/* Spider Sense Manual Trigger (hidden on mobile to save space) */}
-          <button
-            onClick={() => {
-              sound.playSpiderSense();
-              triggerSpiderSense();
-            }}
-            className={`hidden sm:flex p-1.5 rounded-full transition cursor-pointer ${
-              isLight ? 'hover:bg-slate-900/5 text-amber-500' : 'hover:bg-white/10 text-yellow-400 hover:text-yellow-300'
-            }`}
-            title="Trigger Spider-Sense"
-          >
-            <Radio className="w-4 h-4 animate-pulse" />
-          </button>
-
-          {/* Sound Toggle (hidden on mobile to save space) */}
-          <button
-            onClick={toggleSound}
-            className={`hidden sm:flex p-1.5 rounded-full transition cursor-pointer ${
-              isLight ? 'hover:bg-slate-900/5 text-slate-600 hover:text-slate-900' : 'hover:bg-white/10 text-zinc-400 hover:text-white'
-            }`}
-            title={soundEnabled ? 'Mute SFX' : 'Enable SFX'}
-          >
-            {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-[#00d2ff]" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-zinc-400" />
             )}
           </button>
 
