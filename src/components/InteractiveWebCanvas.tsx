@@ -10,8 +10,15 @@ interface Node {
   vx: number;
   vy: number;
   radius: number;
-  baseX: number;
-  baseY: number;
+}
+
+interface WebBurst {
+  x: number;
+  y: number;
+  radius: number;
+  maxRadius: number;
+  opacity: number;
+  spokes: number;
 }
 
 export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
@@ -36,21 +43,16 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
 
     window.addEventListener('resize', handleResize);
 
-    // Particle nodes count based on screen size
-    const nodeCount = Math.min(Math.floor((width * height) / 18000), 55);
+    const nodeCount = Math.min(Math.floor((width * height) / 16000), 60);
     const nodes: Node[] = [];
 
     for (let i = 0; i < nodeCount; i++) {
-      const x = Math.random() * width;
-      const y = Math.random() * height;
       nodes.push({
-        x,
-        y,
-        baseX: x,
-        baseY: y,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
-        radius: Math.random() * 1.8 + 1,
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 1.5 + 0.8,
       });
     }
 
@@ -59,6 +61,8 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
       y: -1000,
       active: false,
     };
+
+    const bursts: WebBurst[] = [];
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
@@ -70,29 +74,43 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
       mouse.active = false;
     };
 
+    const handleClick = (e: MouseEvent) => {
+      // Spawn web burst effect
+      bursts.push({
+        x: e.clientX,
+        y: e.clientY,
+        radius: 2,
+        maxRadius: Math.random() * 30 + 45,
+        opacity: 0.8,
+        spokes: 8,
+      });
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('click', handleClick);
 
-    // Color definitions based on suit theme
     const getColors = () => {
       if (theme === 'miles') {
         return {
-          node: 'rgba(255, 0, 85, 0.45)',
+          node: 'rgba(255, 0, 85, 0.5)',
           line: 'rgba(255, 0, 85, 0.12)',
           mouseLine: 'rgba(255, 230, 0, 0.35)',
+          burst: 'rgba(255, 0, 85, ',
         };
       } else if (theme === '2099') {
         return {
-          node: 'rgba(0, 229, 255, 0.45)',
+          node: 'rgba(0, 229, 255, 0.5)',
           line: 'rgba(168, 85, 247, 0.14)',
           mouseLine: 'rgba(0, 229, 255, 0.35)',
+          burst: 'rgba(0, 229, 255, ',
         };
       } else {
-        // Classic
         return {
-          node: 'rgba(239, 35, 60, 0.45)',
+          node: 'rgba(239, 35, 60, 0.5)',
           line: 'rgba(239, 35, 60, 0.12)',
           mouseLine: 'rgba(0, 210, 255, 0.3)',
+          burst: 'rgba(255, 255, 255, ',
         };
       }
     };
@@ -101,19 +119,45 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
       ctx.clearRect(0, 0, width, height);
       const colors = getColors();
 
+      // Render & update web bursts
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const b = bursts[i];
+        b.radius += 2.5;
+        b.opacity -= 0.025;
+
+        if (b.opacity <= 0 || b.radius >= b.maxRadius) {
+          bursts.splice(i, 1);
+          continue;
+        }
+
+        // Draw radial spider web spokes
+        ctx.strokeStyle = `${colors.burst}${b.opacity})`;
+        ctx.lineWidth = 1;
+        for (let s = 0; s < b.spokes; s++) {
+          const angle = (s * (Math.PI * 2)) / b.spokes;
+          ctx.beginPath();
+          ctx.moveTo(b.x, b.y);
+          ctx.lineTo(b.x + Math.cos(angle) * b.radius, b.y + Math.sin(angle) * b.radius);
+          ctx.stroke();
+        }
+
+        // Concentric rings
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.radius * 0.5, 0, Math.PI * 2);
+        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
       // Update and draw nodes
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
-
-        // Move
         node.x += node.vx;
         node.y += node.vy;
 
-        // Bounce on boundaries
         if (node.x < 0 || node.x > width) node.vx *= -1;
         if (node.y < 0 || node.y > height) node.vy *= -1;
 
-        // Mouse attraction (elastic web tension)
+        // Mouse attraction
         if (mouse.active) {
           const dx = mouse.x - node.x;
           const dy = mouse.y - node.y;
@@ -121,11 +165,11 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
           const maxDist = 180;
 
           if (dist < maxDist) {
-            const force = (1 - dist / maxDist) * 1.5;
+            const force = (1 - dist / maxDist) * 1.8;
             node.x += (dx / dist) * force;
             node.y += (dy / dist) * force;
 
-            // Draw elastic web strand to cursor
+            // Elastic silk strand to cursor
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -135,19 +179,19 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
           }
         }
 
-        // Draw node
+        // Node dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = colors.node;
         ctx.fill();
 
-        // Connect nearby nodes with web lines
+        // Connect nearby nodes
         for (let j = i + 1; j < nodes.length; j++) {
           const other = nodes[j];
           const dx = node.x - other.x;
           const dy = node.y - other.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const connectDist = 130;
+          const connectDist = 135;
 
           if (dist < connectDist) {
             ctx.beginPath();
@@ -169,6 +213,7 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('click', handleClick);
       cancelAnimationFrame(animationFrameId);
     };
   }, [theme]);
