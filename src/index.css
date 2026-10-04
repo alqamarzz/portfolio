@@ -30,6 +30,16 @@
     --spider-dark-border: rgba(0, 229, 255, 0.15);
   }
 
+  /* Theme: Spider-Gwen / Future Foundation (Light Theme) */
+  .theme-gwen, .light {
+    --spider-red: #e11d48;
+    --spider-red-glow: rgba(225, 29, 72, 0.25);
+    --spider-blue: #0284c7;
+    --spider-dark: #f8fafc;
+    --spider-dark-card: #ffffff;
+    --spider-dark-border: rgba(15, 23, 42, 0.08);
+  }
+
   * {
     border-color: var(--spider-dark-border);
   }
@@ -37,6 +47,7 @@
   body {
     background-color: var(--spider-dark);
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
 }
 
@@ -68,12 +79,23 @@
   background-image: radial-gradient(rgba(0, 229, 255, 0.15) 1.5px, transparent 1.5px);
 }
 
+.light .comic-halftone {
+  background-image: radial-gradient(rgba(225, 29, 72, 0.12) 1.5px, transparent 1.5px);
+}
+
 /* Web Grid Background */
 .spider-grid-pattern {
   background-size: 32px 32px;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.light .spider-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
 }
 
 /* Glassmorphism Spider HUD */
@@ -92,6 +114,84 @@
 .theme-2099 .glass-hud {
   background: rgba(8, 11, 20, 0.85);
   border-color: rgba(0, 229, 255, 0.15);
+}
+
+/* ── Light Mode Specific Polish ── */
+.light {
+  color: #0f172a;
+}
+
+.light .glass-hud {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.06);
+}
+
+.light h1, .light h2, .light h3, .light h4 {
+  color: #0f172a !important;
+}
+
+.light p {
+  color: #475569 !important;
+}
+
+.light .text-white {
+  color: #0f172a !important;
+}
+
+.light .text-zinc-100 {
+  color: #0f172a !important;
+}
+
+.light .text-zinc-200 {
+  color: #1e293b !important;
+}
+
+.light .text-zinc-300 {
+  color: #334155 !important;
+}
+
+.light .text-zinc-400 {
+  color: #475569 !important;
+}
+
+.light .text-zinc-500 {
+  color: #64748b !important;
+}
+
+.light .bg-white\/5,
+.light .bg-white\/\[0\.02\],
+.light .bg-white\/\[0\.03\],
+.light .bg-white\/\[0\.04\] {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+
+.light .border-white\/10,
+.light .border-white\/5,
+.light .border-white\/15,
+.light .border-white\/\[0\.06\],
+.light .border-white\/\[0\.07\],
+.light .border-white\/\[0\.08\] {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Light mode inputs */
+.light input, .light textarea {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.15) !important;
+}
+
+.light input::placeholder, .light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Maintain colored buttons text white */
+.light .bg-\[\#ef233c\], 
+.light .bg-\[\#ef233c\] *,
+.light button[type="submit"],
+.light button[type="submit"] * {
+  color: #ffffff !important;
 }
 
 /* Spider Eye Squint Animation */
@@ -122,21 +222,6 @@
   animation: comicFloat 4s ease-in-out infinite;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 7px;
-}
-::-webkit-scrollbar-track {
-  background: #07090e;
-}
-::-webkit-scrollbar-thumb {
-  background: #202636;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #ef233c;
-}
-
 /* Web Click Ripple Animation */
 @keyframes webRipple {
   0% {
@@ -151,4 +236,22 @@
 
 .animate-web-ripple {
   animation: webRipple 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--spider-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #202636;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--spider-red);
 }

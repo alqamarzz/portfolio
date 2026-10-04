@@ -1,15 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 
 interface WebCursorProps {
-  theme: 'classic' | 'miles' | '2099';
+  theme: 'classic' | 'miles' | '2099' | 'gwen';
+  isLight?: boolean;
 }
 
-export const WebCursor: React.FC<WebCursorProps> = ({ theme }) => {
+export const WebCursor: React.FC<WebCursorProps> = ({ theme, isLight = false }) => {
   const dotRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
   const rippleRef = useRef<HTMLDivElement | null>(null);
 
   const getAccentColor = () => {
+    if (isLight || theme === 'gwen') return '#e11d48';
     if (theme === 'miles') return '#ff0055';
     if (theme === '2099') return '#00e5ff';
     return '#ef233c';

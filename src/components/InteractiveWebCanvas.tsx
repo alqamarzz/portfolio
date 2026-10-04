@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface WebCanvasProps {
   theme: 'classic' | 'miles' | '2099';
+  isLight?: boolean;
 }
 
 interface Node {
@@ -21,7 +22,7 @@ interface WebBurst {
   spokes: number;
 }
 
-export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
+export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme, isLight = false }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -75,7 +76,6 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
     };
 
     const handleClick = (e: MouseEvent) => {
-      // Spawn web burst effect
       bursts.push({
         x: e.clientX,
         y: e.clientY,
@@ -91,6 +91,14 @@ export const InteractiveWebCanvas: React.FC<WebCanvasProps> = ({ theme }) => {
     window.addEventListener('click', handleClick);
 
     const getColors = () => {
+      if (isLight) {
+        return {
+          node: 'rgba(225, 29, 72, 0.6)',
+          line: 'rgba(15, 23, 42, 0.08)',
+          mouseLine: 'rgba(2, 132, 199, 0.5)',
+          burst: 'rgba(225, 29, 72, ',
+        };
+      }
       if (theme === 'miles') {
         return {
           node: 'rgba(255, 0, 85, 0.5)',
