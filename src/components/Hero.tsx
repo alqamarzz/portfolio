@@ -27,46 +27,19 @@ const STATS = [
 
 export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false }) => {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [poppedIndex, setPoppedIndex] = useState<{ index: number; sfx: string } | null>(null);
 
-  const NAME_LETTERS = [
-    { char: 'A', rot: -5, color: '#ef233c', sound: 'thwip', sfx: 'THWIP! 🕸️' },
-    { char: 'L', rot: 4,  color: '#00d2ff', sound: 'click', sfx: 'BOING! ⚡' },
-    { char: 'Q', rot: -3, color: '#ffd166', sound: 'spider', sfx: 'SPIDEY! 🕷️' },
-    { char: 'A', rot: 5,  color: '#ff2a85', sound: 'thwip', sfx: 'POW! ✨' },
-    { char: 'M', rot: -4, color: '#a855f7', sound: 'click', sfx: 'ZAP! ⚡' },
-    { char: 'A', rot: 3,  color: '#06d6a0', sound: 'spider', sfx: 'YAY! 💫' },
-    { char: 'R', rot: -5, color: '#ff5e7e', sound: 'thwip', sfx: 'BOOM! 💥' },
-  ];
+  const nameLetters = 'ALQAMAR'.split('');
 
-  const handleLetterClick = (idx: number, e: React.MouseEvent) => {
-    const item = NAME_LETTERS[idx];
-    if (item.sound === 'spider') {
-      sound.playSpiderSense();
-    } else if (item.sound === 'thwip') {
-      sound.playThwip();
-    } else {
-      sound.playClick();
-    }
-
-    // Micro confetti on letter position
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
+  const handleLetterClick = (i: number) => {
+    sound.playClick();
+    triggerSpiderSense('THWIP!');
     confetti({
-      particleCount: 25,
-      spread: 60,
-      origin: { x, y },
-      colors: [item.color, '#ffffff', '#ffd166'],
-      ticks: 120,
-      gravity: 1.2,
-      scalar: 0.8,
+      particleCount: 20,
+      spread: 50,
+      origin: { y: 0.5 },
+      colors: ['#ef233c', '#00d2ff', '#ffffff'],
+      scalar: 0.7,
     });
-
-    setPoppedIndex({ index: idx, sfx: item.sfx });
-    setTimeout(() => {
-      setPoppedIndex((prev) => (prev?.index === idx ? null : prev));
-    }, 1200);
   };
 
   useEffect(() => {
@@ -86,6 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
       colors: ['#ef233c', '#00d2ff', '#ffffff', '#ffd166', '#a855f7'],
     });
   };
+
 
   return (
     <section
@@ -205,141 +179,106 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
           </span>
         </motion.div>
 
-        {/* Cute Comic Interactive Hint */}
+        {/* Doodle Crown (perched atop the wordmark, matching user reference image) */}
         <motion.div
-          initial={{ rotate: 8, scale: 0, opacity: 0 }}
-          animate={{ rotate: 6, scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 320, damping: 18, delay: 0.45 }}
-          className="absolute -top-7 sm:-top-9 right-2 sm:right-4 z-20 hidden xs:flex items-center gap-1 bg-[#ffd166] text-[#0f172a] px-2.5 py-0.5 rounded-full border-2 border-black shadow-md cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+          initial={{ y: -15, opacity: 0, rotate: -6 }}
+          animate={{ y: 0, opacity: 1, rotate: -4 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.35 }}
+          whileHover={{ rotate: 8, scale: 1.15, y: -6 }}
+          className="absolute -top-7 sm:-top-11 left-[50%] -translate-x-1/2 z-30 cursor-pointer pointer-events-auto"
           onClick={() => {
             sound.playSpiderSense();
             confetti({
-              particleCount: 40,
+              particleCount: 35,
               spread: 60,
               origin: { y: 0.45 },
-              colors: ['#ffd166', '#ef233c', '#00d2ff'],
+              colors: ['#3b82f6', '#ef233c', '#ffffff'],
             });
           }}
-          title="Click the letters!"
+          title="King of Code"
         >
-          <span className="font-comic text-[10px] sm:text-xs tracking-wider uppercase flex items-center gap-1">
-            <span>✨</span> Tap letters! <span>🕷️</span>
-          </span>
+          <svg
+            viewBox="0 0 52 38"
+            className="w-10 h-7 sm:w-14 sm:h-9 text-[#3b82f6] dark:text-[#60a5fa] drop-shadow-sm"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Hand-drawn blue doodle crown matching the reference image */}
+            <path d="M 5 28 L 8 9 L 26 21 L 44 9 L 47 28 Z" />
+          </svg>
         </motion.div>
 
-        {/* Funky & Cute Giant Name */}
-        <h1 className="flex items-center justify-center flex-wrap font-comic text-6xl sm:text-9xl md:text-[11rem] font-black tracking-normal leading-none my-1">
-          {NAME_LETTERS.map((item, i) => (
-            <motion.div
+        {/* Hand-drawn Doodle Rays (top-left, from reference image) */}
+        <div className="absolute -top-6 sm:-top-9 left-[6%] sm:left-[12%] pointer-events-none select-none">
+          <svg viewBox="0 0 40 40" className="w-7 h-7 sm:w-10 sm:h-10 text-[#3b82f6] dark:text-[#60a5fa]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="8" y1="18" x2="2" y2="10" />
+            <line x1="20" y1="12" x2="20" y2="3" />
+            <line x1="30" y1="16" x2="36" y2="8" />
+            <path d="M 6 24 C 18 20 28 22 34 26" />
+          </svg>
+        </div>
+
+        {/* Hand-drawn Doodle Curved Ticks (top-right, from reference image) */}
+        <div className="absolute -top-4 sm:-top-7 right-[10%] sm:right-[16%] pointer-events-none select-none">
+          <svg viewBox="0 0 35 25" className="w-6 h-4 sm:w-8 sm:h-5 text-zinc-400 dark:text-zinc-500" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M 3 14 C 10 6 22 6 30 14" />
+            <path d="M 8 7 C 14 2 22 2 28 7" />
+          </svg>
+        </div>
+
+        {/* Hand-drawn Doodle Curved Smile Line (bottom-left, from reference image) */}
+        <div className="absolute -bottom-4 sm:-bottom-6 left-[20%] sm:left-[26%] pointer-events-none select-none flex items-center gap-1.5">
+          <svg viewBox="0 0 45 18" className="w-8 h-3.5 sm:w-11 sm:h-4 text-[#3b82f6] dark:text-[#60a5fa]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M 4 5 Q 22 18 40 5" />
+          </svg>
+          <div className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] dark:bg-[#60a5fa]" />
+        </div>
+
+        {/* Hand-drawn Doodle Curved Smile Line (bottom-right, from reference image) */}
+        <div className="absolute -bottom-3 sm:-bottom-5 right-[22%] sm:right-[28%] pointer-events-none select-none flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] dark:bg-[#60a5fa]" />
+          <svg viewBox="0 0 45 18" className="w-8 h-3.5 sm:w-11 sm:h-4 text-[#3b82f6] dark:text-[#60a5fa]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M 4 5 Q 22 16 38 6" />
+          </svg>
+        </div>
+
+        {/* Hand-drawn Spark Doodle (right side from reference image) */}
+        <div className="absolute top-[38%] -right-1 sm:-right-5 pointer-events-none select-none">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-400 dark:text-zinc-500" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="4" y1="8" x2="20" y2="8" />
+            <line x1="4" y1="16" x2="20" y2="16" />
+            <line x1="12" y1="3" x2="10" y2="21" />
+          </svg>
+        </div>
+
+        {/* 3D Puffy Marshmallow Clay Name */}
+        <h1 className="flex items-center justify-center flex-wrap font-puffy text-6xl sm:text-8xl md:text-[9.5rem] lg:text-[10.5rem] font-bold tracking-tight leading-none px-2 py-1 my-1">
+          {nameLetters.map((char, i) => (
+            <motion.span
               key={i}
-              className="relative inline-block"
-              initial={{ y: 60, opacity: 0, rotate: 0 }}
-              animate={{ y: 0, opacity: 1, rotate: item.rot }}
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{
                 type: 'spring',
                 stiffness: 280,
-                damping: 20,
-                delay: 0.12 + i * 0.05,
+                damping: 22,
+                delay: 0.1 + i * 0.05,
               }}
               whileHover={{
-                y: -22,
-                scale: 1.25,
-                rotate: item.rot + (item.rot > 0 ? 14 : -14),
-                transition: { type: 'spring', stiffness: 450, damping: 12 },
+                y: -10,
+                scale: 1.1,
+                rotate: i % 2 === 0 ? 3 : -3,
+                transition: { type: 'spring', stiffness: 450, damping: 15 },
               }}
-              whileTap={{
-                scale: 0.85,
-                rotate: item.rot * -2,
-                transition: { duration: 0.1 },
-              }}
-              onMouseEnter={() => {
-                sound.playClick();
-              }}
-              onClick={(e) => handleLetterClick(i, e)}
+              whileTap={{ scale: 0.92 }}
+              onClick={() => handleLetterClick(i)}
+              className="puffy-letter px-0.5 sm:px-1"
             >
-              {/* Cute Blinking Spidey Eyes on the first 'A' */}
-              {i === 0 && (
-                <div
-                  className="absolute -top-3 sm:-top-5 left-1/2 -translate-x-1/2 flex items-center gap-1 pointer-events-none z-30"
-                  title="Spidey Eyes"
-                >
-                  <div className="w-2.5 sm:w-3.5 h-1.5 sm:h-2 bg-white border border-black rounded-full rotate-[-15deg] shadow-sm animate-[eyeSquint_3.5s_ease-in-out_infinite]" />
-                  <div className="w-2.5 sm:w-3.5 h-1.5 sm:h-2 bg-white border border-black rounded-full rotate-[15deg] shadow-sm animate-[eyeSquint_3.5s_ease-in-out_infinite]" />
-                </div>
-              )}
-
-              {/* Cute Dangling Spider below 'Q' */}
-              {i === 2 && (
-                <motion.div
-                  animate={{
-                    y: [0, 9, 0],
-                    rotate: [-8, 8, -8],
-                  }}
-                  transition={{
-                    duration: 2.8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="absolute -bottom-8 sm:-bottom-11 left-1/2 -translate-x-1/2 pointer-events-none z-30 flex flex-col items-center"
-                >
-                  {/* Silk thread */}
-                  <div
-                    className="w-[1.5px] h-4 sm:h-6"
-                    style={{
-                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(239,35,60,0.9))',
-                    }}
-                  />
-                  {/* Little spider */}
-                  <span className="text-sm sm:text-base select-none filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                    🕷️
-                  </span>
-                </motion.div>
-              )}
-
-              {/* Cute Floating Star on middle 'A' */}
-              {i === 3 && (
-                <motion.span
-                  animate={{
-                    scale: [0.8, 1.2, 0.8],
-                    rotate: [0, 45, 0],
-                  }}
-                  transition={{ duration: 2.5, repeat: Infinity }}
-                  className="absolute -top-2 -right-1 text-xs sm:text-sm pointer-events-none select-none text-yellow-300"
-                >
-                  ✨
-                </motion.span>
-              )}
-
-              {/* Cute Comic SFX Floating Speech Bubble when clicked */}
-              <AnimatePresence>
-                {poppedIndex?.index === i && (
-                  <motion.div
-                    initial={{ scale: 0, y: 0, opacity: 0 }}
-                    animate={{ scale: 1.15, y: -45, opacity: 1 }}
-                    exit={{ scale: 0.8, y: -65, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                    className="absolute -top-4 left-1/2 -translate-x-1/2 z-40 whitespace-nowrap px-2.5 py-1 rounded-lg text-white font-comic text-xs sm:text-sm shadow-xl border-2 border-white pointer-events-none"
-                    style={{ backgroundColor: item.color }}
-                  >
-                    {poppedIndex.sfx}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* The Actual Funky Character */}
-              <span
-                className={`inline-block px-0.5 sm:px-1 cursor-pointer select-none transition-all duration-200 group-hover:scale-105 ${
-                  isLight
-                    ? 'text-[#0f172a] hover:text-[#ef233c] drop-shadow-[3px_4px_0px_#ef233c] sm:drop-shadow-[5px_6px_0px_#ef233c]'
-                    : 'text-white hover:text-[#ffd166] drop-shadow-[4px_5px_0px_#ef233c] sm:drop-shadow-[6px_8px_0px_#ef233c]'
-                }`}
-                style={{
-                  WebkitTextStroke: isLight ? '1px rgba(15,23,42,0.1)' : '1px rgba(0,0,0,0.5)',
-                }}
-              >
-                {item.char}
-              </span>
-            </motion.div>
+              {char}
+            </motion.span>
           ))}
         </h1>
 
