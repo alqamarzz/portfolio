@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => ({
     tailwindcss(),
     react(),
   ],
-  base: command === 'build' ? '/spiderman-portfolio/' : '/',
+  base: command === 'build' ? '/portfolio/' : '/',
   build: {
     rollupOptions: {
       output: {
