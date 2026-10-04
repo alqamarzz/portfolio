@@ -124,7 +124,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       description: 'Physics-driven dynamic floating pill navbar with spring-based magnetic hover bubbles, layoutId animated pill shifts, and dual-layer specular glassmorphism.',
       stack: ['Next.js', 'React', 'Framer Motion', 'Tailwind CSS', 'TypeScript'],
       github: 'https://github.com/alqamarzz/navbaar',
-      demo: 'https://github.com/alqamarzz/navbaar#readme',
+      demo: 'https://navbaar-two.vercel.app',
       color: '#38bdf8',
       icon: Navigation,
       type: 'navbar',
