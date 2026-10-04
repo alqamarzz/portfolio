@@ -129,7 +129,7 @@ export const WebCursor: React.FC<WebCursorProps> = ({ theme, isLight = false }) 
   const accent = getAccentColor();
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden select-none">
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden select-none hidden md:block">
       {/* Precision Core Dot (Tracks 1:1 instantaneously with 0ms delay) */}
       <div
         ref={dotRef}

@@ -3,7 +3,6 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutBento } from './components/AboutBento';
 import { ProjectsSection } from './components/ProjectsSection';
-import { AchievementsSection } from './components/AchievementsSection';
 import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -12,7 +11,6 @@ import { SpiderSense } from './components/SpiderSense';
 import { ScrollWebProgress } from './components/ScrollWebProgress';
 import { WebCursor } from './components/WebCursor';
 import { SpideyToast, useSpideyToast } from './components/SpideyToast';
-import { ThemeToggleFloat } from './components/ThemeToggleFloat';
 
 export function App() {
   const [theme, setTheme] = useState<'classic' | 'miles' | '2099' | 'gwen'>('classic');
@@ -92,18 +90,9 @@ export function App() {
         <Hero triggerSpiderSense={triggerSpiderSense} isLight={isLight} />
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
         <ProjectsSection triggerSpiderSense={triggerSpiderSense} />
-        <AchievementsSection />
         <ExperienceSection />
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
       </main>
-
-      {/* Floating Theme Mode Switcher in bottom-left */}
-      <ThemeToggleFloat
-        isLight={isLight}
-        setIsLight={setIsLight}
-        setTheme={setTheme}
-        triggerSpiderSense={triggerSpiderSense}
-      />
 
       <Footer />
     </div>

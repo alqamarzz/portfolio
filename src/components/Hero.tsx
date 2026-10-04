@@ -143,41 +143,8 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
         </motion.div>
       </motion.div>
 
-      {/* ── Status Pill ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md mb-8 shadow-sm transition cursor-default ${
-          isLight
-            ? 'bg-slate-100/80 border border-slate-200 hover:border-[#ef233c]/40'
-            : 'bg-white/5 border border-white/10 hover:border-[#ef233c]/40'
-        }`}
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-        </span>
-        <span className={`text-xs sm:text-sm font-medium ${
-          isLight ? 'text-slate-600' : 'text-zinc-300'
-        }`}>
-          Friendly Neighborhood Dev · Available for Work
-        </span>
-      </motion.div>
-
       {/* ── Name Wordmark ── */}
       <div className="relative flex flex-col items-center text-center select-none">
-        {/* Comic badge */}
-        <motion.div
-          initial={{ rotate: -12, scale: 0, opacity: 0 }}
-          animate={{ rotate: -8, scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 18, delay: 0.4 }}
-          className="absolute -top-8 sm:-top-10 -left-2 sm:-left-8 z-20 bg-[#ef233c] text-white px-3 py-0.5 rounded-lg border-2 border-white shadow-lg pointer-events-none"
-        >
-          <span className="font-comic text-xs sm:text-sm tracking-wider uppercase">
-            Earth-616 Codebase
-          </span>
-        </motion.div>
 
         {/* Doodle Crown (perched atop the wordmark, matching user reference image) */}
         <motion.div
@@ -255,7 +222,7 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
         </div>
 
         {/* 3D Puffy Marshmallow Clay Name */}
-        <h1 className="flex items-center justify-center flex-wrap font-puffy text-6xl sm:text-8xl md:text-[9.5rem] lg:text-[10.5rem] font-bold tracking-tight leading-none px-2 py-1 my-1">
+        <h1 className="flex items-center justify-center flex-nowrap font-puffy text-5xl xs:text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-bold tracking-tight leading-none px-1 py-1 my-1 max-w-full">
           {nameLetters.map((char, i) => (
             <motion.span
               key={i}
@@ -275,7 +242,7 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
               }}
               whileTap={{ scale: 0.92 }}
               onClick={() => handleLetterClick(i)}
-              className="puffy-letter px-0.5 sm:px-1"
+              className="puffy-letter px-[2px] xs:px-1 sm:px-1.5 shrink-0"
             >
               {char}
             </motion.span>
@@ -324,12 +291,12 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.65 }}
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
         >
           <a
             href="#projects"
             onClick={() => sound.playClick()}
-            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 ${
+            className={`w-full sm:w-auto px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 ${
               isLight
                 ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20'
                 : 'bg-white text-zinc-950 hover:bg-zinc-100 shadow-lg shadow-white/10'
@@ -339,24 +306,12 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
             <span>Explore Missions</span>
           </a>
 
-          <button
-            onClick={fireWebCelebration}
-            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 group ${
-              isLight
-                ? 'bg-white border border-slate-200 text-slate-900 hover:border-[#ef233c]/60 hover:text-[#ef233c] shadow-sm'
-                : 'glass-hud border border-white/15 text-white hover:border-[#ef233c]/60 hover:text-[#ef233c]'
-            }`}
-          >
-            <Flame className="w-4 h-4 text-[#ef233c] group-hover:rotate-12 transition-transform" />
-            <span>Thwip Web!</span>
-          </button>
-
           <a
             href="https://github.com/alqamarzz"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => sound.playClick()}
-            className={`px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 active:scale-95 ${
+            className={`w-full sm:w-auto px-7 py-3 rounded-full font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 ${
               isLight
                 ? 'bg-white border border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900 shadow-sm'
                 : 'glass-hud border border-white/15 text-zinc-300 hover:border-white/30 hover:text-white'
@@ -370,7 +325,7 @@ export const Hero: React.FC<HeroProps> = ({ triggerSpiderSense, isLight = false 
           <a
             href="#contact"
             onClick={() => sound.playClick()}
-            className="px-7 py-3 rounded-full bg-[#ef233c] hover:bg-[#d90429] text-white font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-[#ef233c]/25 active:scale-95"
+            className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#ef233c] hover:bg-[#d90429] text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#ef233c]/25 active:scale-95"
           >
             <Terminal className="w-4 h-4" />
             <span>Send Signal</span>

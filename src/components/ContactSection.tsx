@@ -79,8 +79,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ triggerSpiderSen
     },
     {
       name: 'Twitter / X',
-      handle: '@alqamar_dev',
-      href: 'https://x.com',
+      handle: '@alqamarzz',
+      href: 'https://x.com/alqamarzz',
       icon: TwitterIcon,
       color: '#1da1f2',
     },

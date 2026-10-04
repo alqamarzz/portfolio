@@ -106,7 +106,6 @@ export const AboutBento: React.FC<AboutBentoProps> = ({ triggerSpiderSense }) =>
               <span className="w-2 h-2 rounded-full bg-[#ef233c] shadow-[0_0_6px_rgba(239,35,60,0.8)]" />
               Superpower: Micro-Interactions
             </span>
-            <span className="text-[#00d2ff]">Earth-616 Ready ✓</span>
           </div>
         </motion.div>
 

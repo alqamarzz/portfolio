@@ -82,7 +82,7 @@ export const ExperienceSection: React.FC = () => {
             </div>
 
             {/* Experience Card */}
-            <div className="rounded-2xl glass-hud p-6 sm:p-7 border border-white/10 group-hover:border-[#ef233c]/40 transition-all duration-300">
+            <div className="rounded-2xl glass-hud p-4 sm:p-7 border border-white/10 group-hover:border-[#ef233c]/40 transition-all duration-300">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                 <div>
                   <h3 className="font-heading text-xl font-bold group-hover:text-[#ef233c] transition-colors">
