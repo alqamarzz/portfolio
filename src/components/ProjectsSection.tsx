@@ -13,7 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Activity,
-  Navigation
+  Navigation,
+  KeyRound
 } from 'lucide-react';
 
 interface ProjectsSectionProps {
@@ -24,6 +25,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [navActiveTab, setNavActiveTab] = useState('Home');
+  const [otpCount, setOtpCount] = useState(4);
 
   // Interactive Solana scrubber state
   const [scrubX, setScrubX] = useState<number | null>(null);
@@ -128,6 +130,20 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       color: '#38bdf8',
       icon: Navigation,
       type: 'navbar',
+    },
+    {
+      id: 'otp-code-input',
+      title: 'MetalForge Animated OTP Input',
+      missionCode: 'MISSION #OTP-06',
+      badge: 'Tactile Micro-Interaction',
+      category: 'Tactile UI',
+      description: 'Apple/MetalForge-inspired 6-digit verification input with fluid sliding indicator, spring pop-up digits, morphing verification pill, and sequential drop-dissolve rejection.',
+      stack: ['Modern CSS', 'JavaScript', 'Spring Physics', 'Responsive UI', 'Micro-Interactions'],
+      github: 'https://github.com/alqamarzz/otp-code-input',
+      demo: 'https://otp-code-input.vercel.app',
+      color: '#22c55e',
+      icon: KeyRound,
+      type: 'otp',
     },
     {
       id: 'credit-card-3d',
@@ -400,6 +416,53 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
                             </button>
                           ))}
                         </div>
+                      </div>
+                    )}
+
+                    {/* Interactive MetalForge OTP Specimen */}
+                    {project.type === 'otp' && (
+                      <div 
+                        onClick={() => {
+                          sound.playClick();
+                          setOtpCount((prev) => (prev >= 6 ? 0 : prev + 2));
+                        }}
+                        className="w-full flex flex-col items-center justify-center py-2 cursor-pointer select-none"
+                        title="Click to cycle OTP verification states"
+                      >
+                        {otpCount === 6 ? (
+                          <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="px-4 py-1.5 rounded-full bg-[#22c55e] text-black font-mono-tech text-xs font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(34,197,94,0.4)]"
+                          >
+                            <span>✓</span>
+                            <span>Verified</span>
+                          </motion.div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-black/60 border border-white/10 shadow-inner">
+                            {[1, 2, 3, 4, 5, 6].map((num, i) => {
+                              const filled = i < otpCount;
+                              const isActive = i === otpCount;
+                              return (
+                                <div
+                                  key={num}
+                                  className={`w-6 h-8 rounded-lg flex items-center justify-center font-mono-tech text-xs transition-all ${
+                                    isActive
+                                      ? 'border-2 border-emerald-400 bg-white/10 text-white shadow-[0_0_8px_rgba(34,197,94,0.3)]'
+                                      : filled
+                                      ? 'bg-white/10 text-white border border-white/15'
+                                      : 'bg-white/5 text-zinc-600 border border-white/5'
+                                  }`}
+                                >
+                                  {filled ? num : ''}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                        <span className="text-[9px] font-mono-tech text-zinc-500 mt-2">
+                          {otpCount === 6 ? 'Click to reset slots' : 'Click to type digits & verify'}
+                        </span>
                       </div>
                     )}
 
