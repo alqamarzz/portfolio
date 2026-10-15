@@ -295,45 +295,71 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  /* ── Passive scroll listener: seamless loop + pause/resume ──
-     We do NOT intercept wheel/touch — the browser handles native
-     two-finger swipe / touch scroll naturally on an overflow-x-scroll
-     container. We just react to the resulting scroll event.           */
+  /* ── Universal wheel listener (Windows & macOS Trackpads) ──
+     Windows precision trackpads often send deltaY or deltaX when 
+     swiping over a horizontal container. We map both to horizontal scrolling. */
   useEffect(() => {
     const el = stripRef.current;
     if (!el) return;
     let resumeTimer: ReturnType<typeof setTimeout>;
-    let looping = false;
 
-    const onScroll = () => {
-      // Pause auto-scroll while user is interacting
-      if (!isDragging.current) isPaused.current = true;
+    const onWheel = (e: WheelEvent) => {
+      // Determine dominant scroll delta (trackpads send deltaX for sideways swipe, or shift+wheel / deltaY)
+      const delta = Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < 1) return;
 
-      // Seamless infinite loop
-      if (!looping) {
-        const half = el.scrollWidth / 2;
-        if (el.scrollLeft >= half) {
-          looping = true;
-          el.scrollLeft -= half;
-          requestAnimationFrame(() => { looping = false; });
-        } else if (el.scrollLeft < 0) {
-          looping = true;
-          el.scrollLeft += half;
-          requestAnimationFrame(() => { looping = false; });
-        }
+      // Prevent page vertical scroll if user is swiping horizontally over the strip
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || Math.abs(e.deltaY) > 5) {
+        e.preventDefault();
       }
 
-      // Resume auto-scroll 900 ms after scroll activity stops
+      isPaused.current = true;
+      el.scrollLeft += delta;
+
+      // Infinite wrap check
+      const half = el.scrollWidth / 2;
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+      if (el.scrollLeft < 0) el.scrollLeft += half;
+
       clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => { isPaused.current = false; }, 900);
+      resumeTimer = setTimeout(() => {
+        isPaused.current = false;
+      }, 1000);
     };
 
-    el.addEventListener('scroll', onScroll, { passive: true });
+    el.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      el.removeEventListener('scroll', onScroll);
+      el.removeEventListener('wheel', onWheel);
       clearTimeout(resumeTimer);
     };
   }, []);
+
+  /* ── Touch events for mobile & touchscreens ── */
+  const touchStartX = useRef(0);
+  const touchStartScroll = useRef(0);
+
+  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    isPaused.current = true;
+    touchStartX.current = e.touches[0].clientX;
+    touchStartScroll.current = stripRef.current?.scrollLeft ?? 0;
+  };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!stripRef.current) return;
+    const el = stripRef.current;
+    const diff = e.touches[0].clientX - touchStartX.current;
+    el.scrollLeft = touchStartScroll.current - diff;
+
+    const half = el.scrollWidth / 2;
+    if (el.scrollLeft >= half) el.scrollLeft -= half;
+    if (el.scrollLeft < 0) el.scrollLeft += half;
+  };
+
+  const onTouchEnd = () => {
+    setTimeout(() => {
+      isPaused.current = false;
+    }, 1000);
+  };
 
   /* ── Mouse hover / click-drag ── */
   const onMouseEnter = () => { isPaused.current = true; };
@@ -343,12 +369,15 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
     isDragging.current = true;
     dragX.current      = e.clientX;
     dragScroll.current = stripRef.current?.scrollLeft ?? 0;
-    e.preventDefault();
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging.current || !stripRef.current) return;
-    stripRef.current.scrollLeft = dragScroll.current - (e.clientX - dragX.current);
+    const el = stripRef.current;
+    el.scrollLeft = dragScroll.current - (e.clientX - dragX.current);
+    const half = el.scrollWidth / 2;
+    if (el.scrollLeft >= half) el.scrollLeft -= half;
+    if (el.scrollLeft < 0) el.scrollLeft += half;
   };
 
   const onMouseUp = () => { isDragging.current = false; };
@@ -402,6 +431,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
           <div className="flex items-stretch gap-5 w-max py-5 px-4">
             {doubled.map((project, idx) => (
