@@ -274,7 +274,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
   const doubled = [...PROJECTS, ...PROJECTS];
 
   const stripRef   = useRef<HTMLDivElement>(null);
-  const rafRef     = useRef<number>();
+  const rafRef     = useRef<number | null>(null);
   const isPaused   = useRef(false);
   const isDragging = useRef(false);
   const dragX      = useRef(0);

@@ -11,6 +11,7 @@ import { SpiderSense } from './components/SpiderSense';
 import { ScrollWebProgress } from './components/ScrollWebProgress';
 import { WebCursor } from './components/WebCursor';
 import { SpideyToast, useSpideyToast } from './components/SpideyToast';
+import { SwingUpButton } from './components/SwingUpButton';
 
 export function App() {
   const [theme, setTheme] = useState<'miles' | '2099' | 'gwen'>('miles');
@@ -96,6 +97,8 @@ export function App() {
       </main>
 
       <Footer />
+      {/* Spider-Man Swing Up Web Pull Button */}
+      <SwingUpButton triggerSpiderSense={triggerSpiderSense} />
     </div>
   );
 }
