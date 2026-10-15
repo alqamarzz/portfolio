@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { sound } from '../utils/audio';
 import { GithubIcon } from './Icons';
 import { ExternalLink, Sparkles, Play, ArrowRight } from 'lucide-react';
@@ -270,27 +270,60 @@ const ProjectCard: React.FC<{
    Section
 ───────────────────────────────────────────────────────────── */
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderSense }) => {
-  // Duplicate the list so the marquee loops seamlessly
+  // Duplicate so the strip loops seamlessly
   const doubled = [...PROJECTS, ...PROJECTS];
+
+  const stripRef   = useRef<HTMLDivElement>(null);
+  const rafRef     = useRef<number>();
+  const isPaused   = useRef(false);
+  const isDragging = useRef(false);
+  const dragX      = useRef(0);
+  const dragScroll = useRef(0);
+
+  /* ── RAF auto-scroll (0.8 px / frame ≈ ~48 px / s at 60 fps) ── */
+  useEffect(() => {
+    const tick = () => {
+      const el = stripRef.current;
+      if (el && !isPaused.current && !isDragging.current) {
+        el.scrollLeft += 0.8;
+        // Seamless loop: jump back when we've scrolled through the first copy
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0;
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, []);
+
+  /* ── Drag handlers ── */
+  const onMouseEnter = () => { isPaused.current = true; };
+  const onMouseLeave = () => { isPaused.current = false; isDragging.current = false; };
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    isDragging.current = true;
+    dragX.current      = e.clientX;
+    dragScroll.current = stripRef.current?.scrollLeft ?? 0;
+    e.preventDefault();
+  };
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !stripRef.current) return;
+    const el = stripRef.current;
+    const dx = e.clientX - dragX.current;
+    let next = dragScroll.current - dx;
+    const half = el.scrollWidth / 2;
+    // Keep inside the loopable range
+    if (next >= half) { next -= half; dragScroll.current -= half; dragX.current = e.clientX; }
+    if (next < 0)     { next += half; dragScroll.current += half; dragX.current = e.clientX; }
+    el.scrollLeft = next;
+  };
+
+  const onMouseUp = () => { isDragging.current = false; };
 
   return (
     <section id="projects" className="relative py-24 overflow-hidden">
-
-      {/* ── CSS keyframes (injected inline) ── */}
-      <style>{`
-        @keyframes marquee-projects {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .projects-marquee {
-          animation: marquee-projects 55s linear infinite;
-          will-change: transform;
-        }
-        /* Pause the whole strip when the user hovers any card */
-        .projects-strip:hover .projects-marquee {
-          animation-play-state: paused;
-        }
-      `}</style>
 
       {/* Ambient glow blobs */}
       <div className="absolute top-1/3 -right-24 w-96 h-96 bg-[#ef233c]/8 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -317,7 +350,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
           {/* Hint */}
           <div className="flex items-center gap-2 text-xs font-mono-tech text-zinc-500 self-start sm:self-auto">
             <ArrowRight className="w-4 h-4 text-[#ef233c] shrink-0" />
-            <span className="uppercase tracking-wider">Hover to pause · Click to launch</span>
+            <span className="uppercase tracking-wider">Drag to explore · Hover pauses</span>
           </div>
         </div>
       </div>
@@ -325,15 +358,21 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       {/* ── Marquee Strip ── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div
-          className="projects-strip overflow-hidden relative rounded-2xl"
+          ref={stripRef}
+          className="overflow-x-scroll no-scrollbar rounded-2xl cursor-grab active:cursor-grabbing select-none"
           style={{
             WebkitMaskImage:
-              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+              'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
             maskImage:
-              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+              'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
           }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
         >
-          <div className="projects-marquee flex items-stretch gap-5 w-max py-5 px-4">
+          <div className="flex items-stretch gap-5 w-max py-5 px-4">
             {doubled.map((project, idx) => (
               <ProjectCard
                 key={`${project.id}-${idx}`}
@@ -362,3 +401,4 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
     </section>
   );
 };
+
