@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface WebCanvasProps {
-  theme: 'classic' | 'miles' | '2099';
+  theme: 'miles' | '2099';
   isLight?: boolean;
 }
 

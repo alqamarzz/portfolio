@@ -4,7 +4,6 @@ import { Hero } from './components/Hero';
 import { AboutBento } from './components/AboutBento';
 import { ProjectsSection } from './components/ProjectsSection';
 import { HackathonsSection } from './components/HackathonsSection';
-import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { InteractiveWebCanvas } from './components/InteractiveWebCanvas';
@@ -14,7 +13,7 @@ import { WebCursor } from './components/WebCursor';
 import { SpideyToast, useSpideyToast } from './components/SpideyToast';
 
 export function App() {
-  const [theme, setTheme] = useState<'classic' | 'miles' | '2099' | 'gwen'>('classic');
+  const [theme, setTheme] = useState<'miles' | '2099' | 'gwen'>('miles');
   const [isLight, setIsLight] = useState(false);
   const [spiderSense, setSpiderSense] = useState<{ active: boolean; message: string }>({
     active: false,
@@ -48,7 +47,7 @@ export function App() {
     switch (theme) {
       case 'miles':  return 'theme-miles text-zinc-100 bg-[#06070a]';
       case '2099':   return 'theme-2099 text-zinc-100 bg-[#04060c]';
-      default:       return 'theme-classic text-zinc-100 bg-[#07090e]';
+      default:       return 'theme-miles text-zinc-100 bg-[#06070a]';
     }
   };
 
@@ -63,7 +62,7 @@ export function App() {
       <ScrollWebProgress />
 
       {/* Physics web background */}
-      <InteractiveWebCanvas theme={theme === 'gwen' ? 'classic' : theme} isLight={isLight} />
+      <InteractiveWebCanvas theme={theme === 'gwen' ? 'miles' : theme} isLight={isLight} />
 
       {/* Spider-Sense comic overlay */}
       <SpiderSense active={spiderSense.active} message={spiderSense.message} />
@@ -92,7 +91,7 @@ export function App() {
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
         <ProjectsSection triggerSpiderSense={triggerSpiderSense} />
         <HackathonsSection triggerSpiderSense={triggerSpiderSense} />
-        <ExperienceSection />
+
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
       </main>
 

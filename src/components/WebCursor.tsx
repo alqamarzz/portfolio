@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface WebCursorProps {
-  theme: 'classic' | 'miles' | '2099' | 'gwen';
+  theme: 'miles' | '2099' | 'gwen';
   isLight?: boolean;
 }
 

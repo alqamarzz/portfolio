@@ -5,7 +5,7 @@ import { sound } from '../utils/audio';
 interface ThemeToggleFloatProps {
   isLight: boolean;
   setIsLight: (v: boolean) => void;
-  setTheme: (t: 'classic' | 'miles' | '2099' | 'gwen') => void;
+  setTheme: (t: 'miles' | '2099' | 'gwen') => void;
   triggerSpiderSense: (msg?: string) => void;
 }
 
@@ -23,7 +23,7 @@ export const ThemeToggleFloat: React.FC<ThemeToggleFloatProps> = ({
       setTheme('gwen');
       triggerSpiderSense('GHOST-SPIDER LIGHT SUIT!');
     } else {
-      setTheme('classic');
+      setTheme('miles');
       triggerSpiderSense('STEALTH DARK SUIT!');
     }
   };

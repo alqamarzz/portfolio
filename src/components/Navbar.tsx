@@ -9,8 +9,8 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
-  theme: 'classic' | 'miles' | '2099' | 'gwen';
-  setTheme: (t: 'classic' | 'miles' | '2099' | 'gwen') => void;
+  theme: 'miles' | '2099' | 'gwen';
+  setTheme: (t: 'miles' | '2099' | 'gwen') => void;
   triggerSpiderSense: (msg?: string) => void;
   soundEnabled: boolean;
   setSoundEnabled: (v: boolean) => void;
@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'about', label: 'Origin' },
     { id: 'projects', label: 'Missions' },
     { id: 'hackathons', label: 'Hackathons' },
-    { id: 'experience', label: 'Patrol' },
+
     { id: 'contact', label: 'Signal' },
   ];
 
@@ -56,13 +56,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       setTheme('gwen');
       triggerSpiderSense('LIGHT SUIT ONLINE!');
     } else {
-      setTheme('classic');
+      setTheme('miles');
       triggerSpiderSense('STEALTH DARK MODE!');
     }
   };
 
   const suitNames = {
-    classic: { name: 'Peter Parker', badge: 'Classic Red & Blue', color: '#ef233c' },
     miles: { name: 'Miles Morales', badge: 'Spider-Verse Stealth', color: '#ff0055' },
     2099: { name: 'Miguel O\'Hara', badge: 'Cyber 2099 Neon', color: '#00e5ff' },
     gwen: { name: 'Ghost-Spider', badge: 'Future Foundation (Light)', color: '#e11d48' },
@@ -182,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }`}>
                     Select Spider Suit
                   </div>
-                  {(['classic', 'miles', '2099', 'gwen'] as const).map((suit) => (
+                  {(['miles', '2099', 'gwen'] as const).map((suit) => (
                     <button
                       key={suit}
                       onClick={() => {
