@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { sound } from '../utils/audio';
 import { 
-  Sparkles, 
   Send, 
   Sun, 
   Moon 
@@ -28,7 +27,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   setIsLight,
 }) => {
   const [activeTab, setActiveTab] = useState('hero');
-  const [suitMenuOpen, setSuitMenuOpen] = useState(false);
 
   const navLinks = [
     { id: 'hero', label: 'Overview' },
@@ -59,12 +57,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       setTheme('miles');
       triggerSpiderSense('STEALTH DARK MODE!');
     }
-  };
-
-  const suitNames = {
-    miles: { name: 'Miles Morales', badge: 'Spider-Verse Stealth', color: '#ff0055' },
-    2099: { name: 'Miguel O\'Hara', badge: 'Cyber 2099 Neon', color: '#00e5ff' },
-    gwen: { name: 'Ghost-Spider', badge: 'Future Foundation (Light)', color: '#e11d48' },
   };
 
   return (
@@ -147,81 +139,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Action Icons */}
         <div className="flex items-center gap-1">
-          {/* Suit Switcher Button */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                sound.playClick();
-                setSuitMenuOpen(!suitMenuOpen);
-              }}
-              className={`p-1.5 rounded-full transition flex items-center gap-1.5 text-xs font-mono-tech cursor-pointer ${
-                isLight ? 'text-slate-700 hover:bg-slate-900/5 hover:text-slate-900' : 'text-zinc-300 hover:bg-white/10 hover:text-white'
-              }`}
-              title="Switch Spider Suit"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#ef233c]" />
-              <span className="hidden md:inline text-[11px] uppercase">
-                {theme}
-              </span>
-            </button>
-
-            <AnimatePresence>
-              {suitMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className={`absolute right-0 mt-2 w-52 py-2 rounded-xl glass-hud border shadow-2xl z-50 text-xs ${
-                    isLight ? 'border-slate-200 bg-white/95 text-slate-800' : 'border-white/10 text-zinc-300'
-                  }`}
-                >
-                  <div className={`px-3 py-1 font-comic uppercase text-[11px] tracking-wider border-b ${
-                    isLight ? 'text-slate-400 border-slate-200' : 'text-zinc-400 border-white/5'
-                  }`}>
-                    Select Spider Suit
-                  </div>
-                  {(['miles', '2099', 'gwen'] as const).map((suit) => (
-                    <button
-                      key={suit}
-                      onClick={() => {
-                        setTheme(suit);
-                        sound.playThwip();
-                        if (suit === 'gwen') {
-                          setIsLight(true);
-                          triggerSpiderSense('Ghost-Spider Light Suit!');
-                        } else {
-                          setIsLight(false);
-                          triggerSpiderSense(`${suitNames[suit].name} Suit Activated!`);
-                        }
-                        setSuitMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between transition cursor-pointer ${
-                        theme === suit
-                          ? isLight
-                            ? 'font-semibold text-slate-900 bg-slate-100'
-                            : 'font-semibold text-white bg-white/5'
-                          : isLight
-                            ? 'text-slate-600 hover:bg-slate-100'
-                            : 'text-zinc-400 hover:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="w-2.5 h-2.5 rounded-full"
-                          style={{ backgroundColor: suitNames[suit].color }}
-                        />
-                        <span>{suitNames[suit].name}</span>
-                      </div>
-                      {theme === suit && (
-                        <span className="text-[10px] text-[#ef233c] font-mono-tech">ACTIVE</span>
-                      )}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
 
           {/* Prominent Light / Dark Mode Toggle Pill */}
           <button
