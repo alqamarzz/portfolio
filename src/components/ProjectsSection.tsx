@@ -323,24 +323,25 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
       </div>
 
       {/* ── Marquee Strip ── */}
-      <div
-        className="projects-strip overflow-hidden w-full relative"
-        style={{
-          /* Theme-agnostic edge fades using mask-image */
-          WebkitMaskImage:
-            'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
-          maskImage:
-            'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
-        }}
-      >
-        <div className="projects-marquee flex items-stretch gap-5 w-max py-5 px-6">
-          {doubled.map((project, idx) => (
-            <ProjectCard
-              key={`${project.id}-${idx}`}
-              project={project}
-              triggerSpiderSense={triggerSpiderSense}
-            />
-          ))}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div
+          className="projects-strip overflow-hidden relative rounded-2xl"
+          style={{
+            WebkitMaskImage:
+              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+            maskImage:
+              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+          }}
+        >
+          <div className="projects-marquee flex items-stretch gap-5 w-max py-5 px-4">
+            {doubled.map((project, idx) => (
+              <ProjectCard
+                key={`${project.id}-${idx}`}
+                project={project}
+                triggerSpiderSense={triggerSpiderSense}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
