@@ -273,29 +273,21 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
   // Duplicate so the strip loops seamlessly
   const doubled = [...PROJECTS, ...PROJECTS];
 
-  const stripRef    = useRef<HTMLDivElement>(null);
-  const rafRef      = useRef<number>();
-  const isPaused    = useRef(false);
-  const isDragging  = useRef(false);
-  const dragX       = useRef(0);
-  const dragScroll  = useRef(0);
-  const touchX      = useRef(0);
-  const touchScroll = useRef(0);
+  const stripRef   = useRef<HTMLDivElement>(null);
+  const rafRef     = useRef<number>();
+  const isPaused   = useRef(false);
+  const isDragging = useRef(false);
+  const dragX      = useRef(0);
+  const dragScroll = useRef(0);
 
-  /* helper: keep scrollLeft inside the seamless loop range */
-  const clamp = (el: HTMLDivElement) => {
-    const half = el.scrollWidth / 2;
-    if (el.scrollLeft >= half) el.scrollLeft -= half;
-    if (el.scrollLeft < 0)    el.scrollLeft += half;
-  };
-
-  /* ── RAF auto-scroll (0.8 px / frame) ── */
+  /* ── RAF auto-scroll (0.8 px / frame ≈ 48 px/s at 60 fps) ── */
   useEffect(() => {
     const tick = () => {
       const el = stripRef.current;
       if (el && !isPaused.current && !isDragging.current) {
         el.scrollLeft += 0.8;
-        clamp(el);
+        // Seamless loop
+        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -303,26 +295,47 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  /* ── Non-passive wheel listener (two-finger trackpad horizontal swipe) ── */
+  /* ── Passive scroll listener: seamless loop + pause/resume ──
+     We do NOT intercept wheel/touch — the browser handles native
+     two-finger swipe / touch scroll naturally on an overflow-x-scroll
+     container. We just react to the resulting scroll event.           */
   useEffect(() => {
     const el = stripRef.current;
     if (!el) return;
-    const onWheel = (e: WheelEvent) => {
-      // Only intercept if there's meaningful horizontal intent
-      if (Math.abs(e.deltaX) < 2 && Math.abs(e.deltaY) < 2) return;
-      e.preventDefault();
-      isPaused.current = true;
-      el.scrollLeft += e.deltaX || e.deltaY * 0.5;
-      clamp(el);
-      // Resume auto-scroll 1 s after the user stops wheeling
-      clearTimeout((el as any)._wheelTimer);
-      (el as any)._wheelTimer = setTimeout(() => { isPaused.current = false; }, 1000);
+    let resumeTimer: ReturnType<typeof setTimeout>;
+    let looping = false;
+
+    const onScroll = () => {
+      // Pause auto-scroll while user is interacting
+      if (!isDragging.current) isPaused.current = true;
+
+      // Seamless infinite loop
+      if (!looping) {
+        const half = el.scrollWidth / 2;
+        if (el.scrollLeft >= half) {
+          looping = true;
+          el.scrollLeft -= half;
+          requestAnimationFrame(() => { looping = false; });
+        } else if (el.scrollLeft < 0) {
+          looping = true;
+          el.scrollLeft += half;
+          requestAnimationFrame(() => { looping = false; });
+        }
+      }
+
+      // Resume auto-scroll 900 ms after scroll activity stops
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { isPaused.current = false; }, 900);
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      clearTimeout(resumeTimer);
+    };
   }, []);
 
-  /* ── Mouse drag handlers ── */
+  /* ── Mouse hover / click-drag ── */
   const onMouseEnter = () => { isPaused.current = true; };
   const onMouseLeave = () => { isPaused.current = false; isDragging.current = false; };
 
@@ -335,31 +348,10 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging.current || !stripRef.current) return;
-    const el = stripRef.current;
-    const dx = e.clientX - dragX.current;
-    el.scrollLeft = dragScroll.current - dx;
-    clamp(el);
+    stripRef.current.scrollLeft = dragScroll.current - (e.clientX - dragX.current);
   };
 
   const onMouseUp = () => { isDragging.current = false; };
-
-  /* ── Touch handlers (mobile / touch screen) ── */
-  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    isPaused.current  = true;
-    touchX.current    = e.touches[0].clientX;
-    touchScroll.current = stripRef.current?.scrollLeft ?? 0;
-  };
-
-  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!stripRef.current) return;
-    const el = stripRef.current;
-    const dx = e.touches[0].clientX - touchX.current;
-    el.scrollLeft = touchScroll.current - dx;
-    clamp(el);
-  };
-
-  const onTouchEnd = () => { isPaused.current = false; };
-
 
   return (
     <section id="projects" className="relative py-24 overflow-hidden">
@@ -389,7 +381,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
           {/* Hint */}
           <div className="flex items-center gap-2 text-xs font-mono-tech text-zinc-500 self-start sm:self-auto">
             <ArrowRight className="w-4 h-4 text-[#ef233c] shrink-0" />
-            <span className="uppercase tracking-wider">Drag to explore · Hover pauses</span>
+            <span className="uppercase tracking-wider">Trackpad swipe or Drag to explore · Hover pauses</span>
           </div>
         </div>
       </div>
@@ -410,9 +402,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ triggerSpiderS
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
         >
           <div className="flex items-stretch gap-5 w-max py-5 px-4">
             {doubled.map((project, idx) => (
