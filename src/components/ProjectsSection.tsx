@@ -17,7 +17,8 @@ interface Project {
   demo: string;
   color: string;
   /** Place the .mp4 screen-recording at public/videos/<id>.mp4 */
-  videoSrc: string;
+  videoSrc?: string;
+  posterSrc?: string;
 }
 
 interface ProjectsSectionProps {
@@ -107,17 +108,18 @@ const PROJECTS: Project[] = [
     videoSrc: '/videos/swipe-action-row.mp4',
   },
   {
-    id: 'solana-ecosystem-tracker',
-    title: 'Solana Telemetry Oracle',
-    missionCode: 'MISSION #ORACLE-24',
-    badge: 'Automated CI/CD',
+    id: 'eye-button',
+    title: 'Scrolltide Eye Button',
+    missionCode: 'MISSION #EYE-08',
+    badge: 'Micro-Interaction',
     description:
-      'Automated daily telemetry engine tracking Solana Mainnet TPS, DeFi TVL, price volatility, and epoch metrics via scheduled GitHub Actions git-scraping.',
-    stack: ['GitHub Actions', 'Solana RPC', 'TypeScript', 'DeFiLlama API'],
-    github: 'https://github.com/alqamarzz/solana-ecosystem-tracker',
-    demo: 'https://github.com/alqamarzz/solana-ecosystem-tracker#readme',
-    color: '#14F195',
-    videoSrc: '/videos/solana-ecosystem-tracker.mp4',
+      'Scrolltide-inspired tactile button replica featuring physics-driven cursor tracking, googly parallax depth, randomized natural blinks, and interactive copy feedback.',
+    stack: ['React', 'Framer Motion', 'Spring Physics', 'Tailwind CSS'],
+    github: 'https://github.com/alqamarzz/eye-button',
+    demo: 'https://eye-button.vercel.app',
+    color: '#e05a30',
+    videoSrc: '/videos/eye-button.mp4',
+    posterSrc: '/eye-button-poster.jpg',
   },
 ];
 
@@ -129,7 +131,7 @@ const ProjectCard: React.FC<{
   triggerSpiderSense: (msg?: string) => void;
 }> = ({ project, triggerSpiderSense }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoFailed, setVideoFailed] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(!project.videoSrc);
 
   return (
     <article className="w-[300px] sm:w-[340px] shrink-0 rounded-2xl border border-white/10 hover:border-white/20 overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)] bg-white/[0.03] backdrop-blur-sm cursor-default">
@@ -138,10 +140,11 @@ const ProjectCard: React.FC<{
       <div className="relative w-full h-[185px] overflow-hidden bg-[#09090f] shrink-0">
 
         {/* Video element — autoplays (muted) as marquee rolls */}
-        {!videoFailed && (
+        {!videoFailed && project.videoSrc && (
           <video
             ref={videoRef}
             src={project.videoSrc}
+            poster={project.posterSrc}
             autoPlay
             muted
             loop
@@ -151,8 +154,17 @@ const ProjectCard: React.FC<{
           />
         )}
 
-        {/* Fallback gradient — shown if video fails to load */}
-        {videoFailed && (
+        {/* Poster image preview (if video failed or not provided) */}
+        {videoFailed && project.posterSrc && (
+          <img
+            src={project.posterSrc}
+            alt={project.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        )}
+
+        {/* Fallback gradient — shown if neither video nor poster is available */}
+        {videoFailed && !project.posterSrc && (
           <div
             className="absolute inset-0 flex flex-col items-center justify-center gap-2"
             style={{
