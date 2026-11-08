@@ -23,6 +23,7 @@ interface ComponentProject {
 
 interface ComponentsSectionProps {
   triggerSpiderSense: (msg?: string) => void;
+  isEmbedded?: boolean;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -281,7 +282,7 @@ const ComponentCard: React.FC<{
 /* ─────────────────────────────────────────────────────────────
    Section: Components & Micro-Interactions
 ───────────────────────────────────────────────────────────── */
-export const ComponentsSection: React.FC<ComponentsSectionProps> = ({ triggerSpiderSense }) => {
+export const ComponentsSection: React.FC<ComponentsSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {
   // Duplicate so the strip loops seamlessly
   const doubled = [...COMPONENTS, ...COMPONENTS];
 
@@ -390,39 +391,57 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({ triggerSpi
   const onMouseUp = () => { isDragging.current = false; };
 
   return (
-    <section id="components" className="relative py-24 overflow-hidden">
+    <div className={`relative ${isEmbedded ? 'py-4' : 'py-24'} overflow-hidden`}>
       {/* Anchor for backward compatibility with #projects */}
-      <div id="projects" className="absolute -top-10" />
+      {!isEmbedded && <div id="projects" className="absolute -top-10" />}
 
       {/* Ambient glow blobs */}
-      <div className="absolute top-1/3 -right-24 w-96 h-96 bg-[#ef233c]/8 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 -left-32 w-72 h-72 bg-[#38bdf8]/5 rounded-full blur-3xl pointer-events-none -z-10" />
+      {!isEmbedded && (
+        <>
+          <div className="absolute top-1/3 -right-24 w-96 h-96 bg-[#ef233c]/8 rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute bottom-1/4 -left-32 w-72 h-72 bg-[#38bdf8]/5 rounded-full blur-3xl pointer-events-none -z-10" />
+        </>
+      )}
 
-      {/* ── Section Header ── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ef233c]/10 border border-[#ef233c]/30 text-[#ef233c] text-xs font-mono-tech mb-3 uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Section 01 · Tactile Labs</span>
+      {/* ── Section Header (if standalone) or Compact Hint (if embedded) ── */}
+      {!isEmbedded ? (
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ef233c]/10 border border-[#ef233c]/30 text-[#ef233c] text-xs font-mono-tech mb-3 uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Section 01 · Tactile Labs</span>
+              </div>
+              <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
+                <span className="text-inherit">Shipped </span>
+                <span className="text-[#ef233c] font-comic">Components</span>
+                {' '}& Micro-Interactions
+              </h2>
+              <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-2">
+                Interactive micro-interaction specimens and tactile systems engineered with spring physics and 60fps polish.
+              </p>
             </div>
-            <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
-              <span className="text-inherit">Shipped </span>
-              <span className="text-[#ef233c] font-comic">Components</span>
-              {' '}& Micro-Interactions
-            </h2>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-lg mt-2">
-              Interactive micro-interaction specimens and tactile systems engineered with spring physics and 60fps polish.
-            </p>
-          </div>
 
-          {/* Hint */}
-          <div className="flex items-center gap-2 text-xs font-mono-tech text-zinc-500 self-start sm:self-auto">
-            <ArrowRight className="w-4 h-4 text-[#ef233c] shrink-0" />
-            <span className="uppercase tracking-wider">Trackpad swipe or Drag to explore · Hover pauses</span>
+            <div className="flex items-center gap-2 text-xs font-mono-tech text-zinc-500 self-start sm:self-auto">
+              <ArrowRight className="w-4 h-4 text-[#ef233c] shrink-0" />
+              <span className="uppercase tracking-wider">Trackpad swipe or Drag to explore · Hover pauses</span>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="max-w-6xl mx-auto px-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#ef233c] animate-pulse" />
+            <span className="text-xs font-mono-tech text-zinc-300 uppercase tracking-wider font-semibold">
+              7 Micro-Interactions & UI Kits
+            </span>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-mono-tech text-zinc-400">
+            <ArrowRight className="w-3.5 h-3.5 text-[#ef233c]" />
+            <span>Trackpad swipe or Drag to explore · Hover pauses</span>
+          </div>
+        </div>
+      )}
 
       {/* ── Marquee Strip ── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -470,6 +489,6 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({ triggerSpi
           <ArrowRight className="w-3.5 h-3.5 text-[#ef233c]" />
         </a>
       </div>
-    </section>
+    </div>
   );
 };

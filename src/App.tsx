@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutBento } from './components/AboutBento';
-import { ComponentsSection } from './components/ComponentsSection';
-import { FullstackSection } from './components/FullstackSection';
-import { HackathonsSection } from './components/HackathonsSection';
+import { MissionsShowcase, ShowcaseTabId } from './components/MissionsShowcase';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { InteractiveWebCanvas } from './components/InteractiveWebCanvas';
@@ -17,6 +15,7 @@ import { SwingUpButton } from './components/SwingUpButton';
 export function App() {
   const [theme, setTheme] = useState<'miles' | '2099' | 'gwen'>('miles');
   const [isLight, setIsLight] = useState(false);
+  const [showcaseTab, setShowcaseTab] = useState<ShowcaseTabId>('components');
   const [spiderSense, setSpiderSense] = useState<{ active: boolean; message: string }>({
     active: false,
     message: '',
@@ -85,15 +84,20 @@ export function App() {
         setSoundEnabled={setSoundEnabled}
         isLight={isLight}
         setIsLight={setIsLight}
+        showcaseTab={showcaseTab}
+        setShowcaseTab={setShowcaseTab}
       />
 
       {/* Page Sections */}
       <main className="relative z-10">
         <Hero triggerSpiderSense={triggerSpiderSense} isLight={isLight} />
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
-        <ComponentsSection triggerSpiderSense={triggerSpiderSense} />
-        <FullstackSection triggerSpiderSense={triggerSpiderSense} />
-        <HackathonsSection triggerSpiderSense={triggerSpiderSense} />
+        <MissionsShowcase
+          activeTab={showcaseTab}
+          setActiveTab={setShowcaseTab}
+          triggerSpiderSense={triggerSpiderSense}
+          isLight={isLight}
+        />
 
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
       </main>

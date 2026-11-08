@@ -15,6 +15,8 @@ interface NavbarProps {
   setSoundEnabled: (v: boolean) => void;
   isLight: boolean;
   setIsLight: (v: boolean) => void;
+  showcaseTab?: 'components' | 'fullstack' | 'hackathons';
+  setShowcaseTab?: (tab: 'components' | 'fullstack' | 'hackathons') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,6 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   setSoundEnabled,
   isLight,
   setIsLight,
+  showcaseTab,
+  setShowcaseTab,
 }) => {
   const [activeTab, setActiveTab] = useState('hero');
 
@@ -40,6 +44,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleNavClick = (id: string) => {
     setActiveTab(id);
     sound.playClick();
+
+    if (id === 'components' || id === 'fullstack' || id === 'hackathons') {
+      setShowcaseTab?.(id as 'components' | 'fullstack' | 'hackathons');
+      const el = document.getElementById('showcase') || document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });

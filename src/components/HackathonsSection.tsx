@@ -19,9 +19,10 @@ import {
 
 interface HackathonsSectionProps {
   triggerSpiderSense: (msg?: string) => void;
+  isEmbedded?: boolean;
 }
 
-export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpiderSense }) => {
+export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {
   const hackathonProjects = [
     {
       id: 'street-sign',
@@ -72,47 +73,65 @@ export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpi
   ];
 
   return (
-    <section id="hackathons" className="relative py-24 px-4 max-w-6xl mx-auto overflow-hidden">
+    <div className={`relative ${isEmbedded ? 'py-4' : 'py-24'} px-4 max-w-6xl mx-auto overflow-hidden`}>
       {/* Background Glow Accents */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-[#9945FF]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-[#14F195]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      {!isEmbedded && (
+        <>
+          <div className="absolute top-1/4 -left-20 w-80 h-80 bg-[#9945FF]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-[#14F195]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        </>
+      )}
 
-      {/* Section Header */}
-      <div className="flex flex-col items-center mb-14 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#9945FF]/15 via-[#14F195]/15 to-[#ef233c]/15 border border-[#9945FF]/30 text-xs font-mono-tech mb-4 uppercase tracking-wider"
-        >
-          <Trophy className="w-3.5 h-3.5 text-[#14F195]" />
-          <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#14F195]">
-            Section 03 · Solana Monolith Hackathon
+      {/* ── Section Header (if standalone) or Compact Pill (if embedded) ── */}
+      {!isEmbedded ? (
+        <div className="flex flex-col items-center mb-14 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#9945FF]/15 via-[#14F195]/15 to-[#ef233c]/15 border border-[#9945FF]/30 text-xs font-mono-tech mb-4 uppercase tracking-wider"
+          >
+            <Trophy className="w-3.5 h-3.5 text-[#14F195]" />
+            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#14F195]">
+              Section 03 · Solana Monolith Hackathon
+            </span>
+          </motion.div>
+
+          <motion.h2 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight"
+          >
+            Hackathon <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#00d2ff] to-[#14F195] font-comic">Deployments</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-zinc-400 text-sm sm:text-base max-w-2xl mt-3 leading-relaxed"
+          >
+            Engineered under high-velocity constraints during the global{' '}
+            <strong className="text-zinc-200">Solana Monolith Hackathon</strong> — pioneering offline transaction cryptography 
+            and biometric dead-man's switch self-custody.
+          </motion.p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#14F195] animate-pulse" />
+            <span className="text-xs font-mono-tech text-zinc-300 uppercase tracking-wider font-semibold">
+              2 Web3 Protocols · Solana Monolith Hackathon
+            </span>
+          </div>
+          <span className="text-xs font-mono-tech text-zinc-400 hidden sm:inline">
+            Offline Ed25519 · Anchor Biometric PDA
           </span>
-        </motion.div>
-
-        <motion.h2 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight"
-        >
-          Hackathon <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] via-[#00d2ff] to-[#14F195] font-comic">Deployments</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="text-zinc-400 text-sm sm:text-base max-w-2xl mt-3 leading-relaxed"
-        >
-          Engineered under high-velocity constraints during the global{' '}
-          <strong className="text-zinc-200">Solana Monolith Hackathon</strong> — pioneering offline transaction cryptography 
-          and biometric dead-man's switch self-custody.
-        </motion.p>
-      </div>
+        </div>
+      )}
 
       {/* 2 Hackathon Project Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -247,6 +266,6 @@ export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpi
           </motion.div>
         ))}
       </div>
-    </section>
+    </div>
   );
 };

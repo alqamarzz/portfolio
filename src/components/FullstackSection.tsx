@@ -22,6 +22,7 @@ import {
 
 interface FullstackSectionProps {
   triggerSpiderSense: (msg?: string) => void;
+  isEmbedded?: boolean;
 }
 
 interface FullstackProject {
@@ -156,51 +157,69 @@ const FULLSTACK_PROJECTS: FullstackProject[] = [
   },
 ];
 
-export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpiderSense }) => {
+export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {
   const [activeVideo, setActiveVideo] = useState<string | null>('nexus-chat');
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   return (
-    <section id="fullstack" className="relative py-24 px-4 max-w-6xl mx-auto overflow-hidden">
+    <div className={`relative ${isEmbedded ? 'py-4' : 'py-24'} px-4 max-w-6xl mx-auto overflow-hidden`}>
       {/* Background Glow Accents */}
-      <div className="absolute top-1/4 -right-24 w-96 h-96 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-1/3 -left-28 w-80 h-80 bg-[#ef233c]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      {!isEmbedded && (
+        <>
+          <div className="absolute top-1/4 -right-24 w-96 h-96 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute bottom-1/3 -left-28 w-80 h-80 bg-[#ef233c]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        </>
+      )}
 
-      {/* ── Section Header ── */}
-      <div className="flex flex-col items-center mb-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#38bdf8]/15 via-[#ef233c]/15 to-[#22c55e]/15 border border-[#38bdf8]/30 text-xs font-mono-tech mb-4 uppercase tracking-wider"
-        >
-          <Server className="w-3.5 h-3.5 text-[#38bdf8]" />
-          <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-white to-[#ef233c]">
-            Section 02 · Fullstack Systems
+      {/* ── Section Header (if standalone) or Compact Pill (if embedded) ── */}
+      {!isEmbedded ? (
+        <div className="flex flex-col items-center mb-16 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#38bdf8]/15 via-[#ef233c]/15 to-[#22c55e]/15 border border-[#38bdf8]/30 text-xs font-mono-tech mb-4 uppercase tracking-wider"
+          >
+            <Server className="w-3.5 h-3.5 text-[#38bdf8]" />
+            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-white to-[#ef233c]">
+              Section 02 · Fullstack Systems
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight"
+          >
+            Fullstack <span className="text-[#38bdf8] font-comic">Deployments</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-zinc-400 text-sm sm:text-base max-w-2xl mt-3 leading-relaxed"
+          >
+            Production-grade fullstack web applications engineered with real-time WebSockets,
+            Google Gemini AI models, relational databases with Row-Level Security, and scalable backend services.
+          </motion.p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse" />
+            <span className="text-xs font-mono-tech text-zinc-300 uppercase tracking-wider font-semibold">
+              2 Production Fullstack Applications · Nexus Chat & DevTrack
+            </span>
+          </div>
+          <span className="text-xs font-mono-tech text-zinc-400 hidden sm:inline">
+            Supabase Realtime · Gemini AI · MERN
           </span>
-        </motion.div>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight"
-        >
-          Fullstack <span className="text-[#38bdf8] font-comic">Deployments</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="text-zinc-400 text-sm sm:text-base max-w-2xl mt-3 leading-relaxed"
-        >
-          Production-grade fullstack web applications engineered with real-time WebSockets,
-          Google Gemini AI models, relational databases with Row-Level Security, and scalable backend services.
-        </motion.p>
-      </div>
+        </div>
+      )}
 
       {/* ── Fullstack Projects Showcase ── */}
       <div className="space-y-12">
@@ -457,6 +476,6 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
           );
         })}
       </div>
-    </section>
+    </div>
   );
 };
