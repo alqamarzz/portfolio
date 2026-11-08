@@ -87,7 +87,7 @@ export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpi
         >
           <Trophy className="w-3.5 h-3.5 text-[#14F195]" />
           <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#9945FF] to-[#14F195]">
-            Monolith Solana Hackathon
+            Section 03 · Solana Monolith Hackathon
           </span>
         </motion.div>
 

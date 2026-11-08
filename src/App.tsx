@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutBento } from './components/AboutBento';
-import { ProjectsSection } from './components/ProjectsSection';
+import { ComponentsSection } from './components/ComponentsSection';
+import { FullstackSection } from './components/FullstackSection';
 import { HackathonsSection } from './components/HackathonsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -90,7 +91,8 @@ export function App() {
       <main className="relative z-10">
         <Hero triggerSpiderSense={triggerSpiderSense} isLight={isLight} />
         <AboutBento triggerSpiderSense={triggerSpiderSense} />
-        <ProjectsSection triggerSpiderSense={triggerSpiderSense} />
+        <ComponentsSection triggerSpiderSense={triggerSpiderSense} />
+        <FullstackSection triggerSpiderSense={triggerSpiderSense} />
         <HackathonsSection triggerSpiderSense={triggerSpiderSense} />
 
         <ContactSection triggerSpiderSense={triggerSpiderSense} />
