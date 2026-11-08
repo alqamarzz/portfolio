@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '../utils/audio';
 import { GithubIcon } from './Icons';
+import { NexusChatSimulation } from './NexusChatSimulation';
 import {
   Server,
   ExternalLink,
@@ -25,6 +26,7 @@ import {
 interface FullstackSectionProps {
   triggerSpiderSense: (msg?: string) => void;
   isEmbedded?: boolean;
+  isLight?: boolean;
 }
 
 interface FullstackProject {
@@ -159,18 +161,28 @@ const FULLSTACK_PROJECTS: FullstackProject[] = [
   },
 ];
 
-export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {
+export const FullstackSection: React.FC<FullstackSectionProps> = ({
+  triggerSpiderSense,
+  isEmbedded = false,
+  isLight = false,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<number>(1);
+  const [hoverProject, setHoverProject] = useState<number>(0);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   const project = FULLSTACK_PROJECTS[currentIndex];
   const isFlagship = project.id === 'nexus-chat';
 
+  useEffect(() => {
+    setHoverProject(currentIndex);
+  }, [currentIndex]);
+
   const goToProject = (targetIndex: number) => {
     if (targetIndex === currentIndex) return;
     setSlideDirection(targetIndex > currentIndex ? 1 : -1);
     setCurrentIndex(targetIndex);
+    setHoverProject(targetIndex);
     sound.playClick();
     triggerSpiderSense(`VIEWING ${FULLSTACK_PROJECTS[targetIndex].title.toUpperCase()}`);
   };
@@ -179,6 +191,7 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
     const prev = (currentIndex - 1 + FULLSTACK_PROJECTS.length) % FULLSTACK_PROJECTS.length;
     setSlideDirection(-1);
     setCurrentIndex(prev);
+    setHoverProject(prev);
     sound.playClick();
     triggerSpiderSense(`VIEWING ${FULLSTACK_PROJECTS[prev].title.toUpperCase()}`);
   };
@@ -187,6 +200,7 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
     const next = (currentIndex + 1) % FULLSTACK_PROJECTS.length;
     setSlideDirection(1);
     setCurrentIndex(next);
+    setHoverProject(next);
     sound.playClick();
     triggerSpiderSense(`VIEWING ${FULLSTACK_PROJECTS[next].title.toUpperCase()}`);
   };
@@ -248,42 +262,68 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
         </div>
       )}
 
-      {/* ── Horizontal Slide Controls & Tab Bar ── */}
+      {/* ── Horizontal Slide Controls & Dynamic Bubble Pill Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        {/* Toggle Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl border backdrop-blur-md self-start sm:self-auto"
-          style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
+        {/* Toggle Pills with Dynamic Bubble Pill spring animation */}
+        <div
+          onMouseLeave={() => setHoverProject(currentIndex)}
+          className="flex items-center gap-1.5 p-1.5 rounded-full border backdrop-blur-md self-start sm:self-auto shadow-sm"
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            borderColor: 'rgba(255,255,255,0.12)',
+          }}
         >
           {FULLSTACK_PROJECTS.map((p, idx) => {
             const isSelected = idx === currentIndex;
+            const isHovered = idx === hoverProject;
+
             return (
               <button
                 key={p.id}
+                onMouseEnter={() => setHoverProject(idx)}
                 onClick={() => goToProject(idx)}
-                className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono-tech transition-all flex items-center gap-2 cursor-pointer ${
-                  isSelected
-                    ? 'font-bold'
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                className={`relative px-4 py-2 rounded-full text-xs font-mono-tech transition-colors duration-200 flex items-center gap-2 cursor-pointer ${
+                  isSelected ? 'font-bold' : 'text-zinc-400 hover:text-white'
                 }`}
                 style={{ color: isSelected ? '#f8fafc' : undefined }}
               >
-                {isSelected && (
+                {/* Bubble Layer 1: Magnetic Hover Bubble */}
+                {isHovered && (
                   <motion.div
-                    layoutId="activeFullstackSlidePill"
-                    className="absolute inset-0 rounded-lg border backdrop-blur-md -z-10 shadow-sm"
-                    style={{
-                      borderColor: `${p.accentColor}60`,
-                      backgroundColor: 'rgba(255,255,255,0.1)',
+                    layoutId="fullstack-bubble-hover"
+                    className="absolute inset-0 rounded-full bg-white/10 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)] -z-10"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 500,
+                      damping: 35,
                     }}
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                   />
                 )}
+
+                {/* Bubble Layer 2: Click-Active Specular Bubble */}
+                {isSelected && (
+                  <motion.div
+                    layoutId="fullstack-bubble-active"
+                    className="absolute inset-0 rounded-full border backdrop-blur-md -z-10"
+                    style={{
+                      borderColor: `${p.accentColor}80`,
+                      backgroundColor: 'rgba(255,255,255,0.15)',
+                      boxShadow: `0 0 16px ${p.accentColor}30, inset 0 1px 2px rgba(255,255,255,0.25)`,
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 500,
+                      damping: 30,
+                    }}
+                  />
+                )}
+
                 <span
                   className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: p.accentColor }}
                 />
                 <span>{p.title}</span>
-                <span className="text-[10px] text-zinc-500 font-normal hidden md:inline">
+                <span className="text-[10px] text-zinc-400 font-normal hidden md:inline">
                   · {p.badge}
                 </span>
               </button>
@@ -293,7 +333,8 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
 
         {/* Counter & Arrow Nav */}
         <div className="flex items-center gap-2.5 text-xs font-mono-tech text-zinc-400 self-end sm:self-auto">
-          <span className="text-[11px] px-2.5 py-1 rounded-lg border"
+          <span
+            className="text-[11px] px-3 py-1.5 rounded-full border shadow-xs"
             style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
           >
             Slide <strong className="font-bold" style={{ color: 'inherit' }}>{currentIndex + 1}</strong> of{' '}
@@ -303,7 +344,7 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrev}
-              className="p-1.5 rounded-lg border transition-all cursor-pointer active:scale-95 hover:opacity-80"
+              className="p-2 rounded-full border transition-all cursor-pointer active:scale-95 hover:opacity-80 shadow-xs"
               style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
               title="Previous fullstack project (Swipe right)"
             >
@@ -311,7 +352,7 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
             </button>
             <button
               onClick={handleNext}
-              className="p-1.5 rounded-lg border transition-all cursor-pointer active:scale-95 hover:opacity-80"
+              className="p-2 rounded-full border transition-all cursor-pointer active:scale-95 hover:opacity-80 shadow-xs"
               style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
               title="Next fullstack project (Swipe left)"
             >
@@ -378,22 +419,33 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
               {/* ── Main Content Grid ── */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
-                {/* Left Column: Media Video / Architecture (5 cols on lg) */}
+                {/* Left Column: Media Video / Simulation (5 cols on lg) */}
                 <div className="lg:col-span-5 flex flex-col gap-4">
-                  <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#07080d] shadow-inner aspect-video sm:aspect-[16/10] flex items-center justify-center">
-                    {project.videoSrc ? (
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[project.id] = el;
-                        }}
-                        src={project.videoSrc}
-                        poster={project.posterSrc}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                  <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-inner aspect-video sm:aspect-[16/10] flex items-center justify-center">
+                    {project.id === 'nexus-chat' ? (
+                      <NexusChatSimulation isLight={isLight} />
+                    ) : project.videoSrc ? (
+                      <div className="relative w-full h-full bg-[#07080d]">
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[project.id] = el;
+                          }}
+                          src={project.videoSrc}
+                          poster={project.posterSrc}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/75 border border-white/15 backdrop-blur-md">
+                          <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
+                          <span className="text-[10px] font-mono-tech text-zinc-300 uppercase tracking-wider font-semibold">
+                            Live Stack Active
+                          </span>
+                        </div>
+                      </div>
                     ) : (
                       <div
                         className="w-full h-full flex flex-col items-center justify-center p-6 text-center"
@@ -410,17 +462,6 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
                         </p>
                       </div>
                     )}
-
-                    {/* Overlay scanline effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                    
-                    {/* Live Status indicator */}
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/75 border border-white/15 backdrop-blur-md">
-                      <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
-                      <span className="text-[10px] font-mono-tech text-zinc-300 uppercase tracking-wider font-semibold">
-                        Live Stack Active
-                      </span>
-                    </div>
                   </div>
 
                   {/* Architecture Protocol Visualizer */}

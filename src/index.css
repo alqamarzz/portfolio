@@ -30,14 +30,14 @@
     --spider-dark-border: rgba(0, 229, 255, 0.15);
   }
 
-  /* Theme: Spider-Gwen / Future Foundation (Light Theme) */
+  /* Theme: Spider-Gwen / Warm Cream & Off-White Texture */
   .theme-gwen, .light {
     --spider-red: #e11d48;
     --spider-red-glow: rgba(225, 29, 72, 0.25);
     --spider-blue: #0284c7;
-    --spider-dark: #f8fafc;
-    --spider-dark-card: #ffffff;
-    --spider-dark-border: rgba(15, 23, 42, 0.08);
+    --spider-dark: #FAF7F2;
+    --spider-dark-card: #FFFDF9;
+    --spider-dark-border: rgba(120, 100, 80, 0.14);
   }
 
   * {
@@ -155,15 +155,19 @@
   border-color: rgba(0, 229, 255, 0.15);
 }
 
-/* ── Light Mode Specific Polish ── */
+/* ── Light Mode Specific Polish (Warm Cream / Off-White Texture) ── */
 .light {
-  color: #0f172a;
+  background-color: #FAF7F2 !important;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(246, 238, 227, 0.8) 0px, transparent 55%),
+    radial-gradient(at 85% 80%, rgba(243, 233, 219, 0.75) 0px, transparent 50%) !important;
+  color: #1C1917 !important;
 }
 
 .light .glass-hud {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(15, 23, 42, 0.08);
-  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.06);
+  background: rgba(254, 252, 248, 0.92) !important;
+  border-color: rgba(140, 120, 95, 0.16) !important;
+  box-shadow: 0 14px 40px -6px rgba(120, 90, 60, 0.08), 0 2px 6px -1px rgba(120, 90, 60, 0.04) !important;
 }
 
 /* Headings in light mode — use :not to exclude those already using explicit color classes */
@@ -171,57 +175,55 @@
 .light h2:not([class*="text-["]),
 .light h3:not([class*="text-["]),
 .light h4:not([class*="text-["]) {
-  color: #0f172a;
+  color: #1C1917 !important;
 }
 
 .light p {
-  color: #475569;
+  color: #57534E !important;
 }
 
-/* Map dark-mode text colors to readable light-mode equivalents.
-   IMPORTANT: No blanket .text-white override; it was breaking interactive
-   components (hero name letters, buttons, etc.). Instead we scope it to
-   elements that don't already carry theme-aware classes. */
+/* Map dark-mode text colors to readable warm cream light-mode equivalents */
 .light .text-zinc-100 {
-  color: #0f172a !important;
+  color: #1C1917 !important;
 }
 
 .light .text-zinc-200 {
-  color: #1e293b !important;
+  color: #292524 !important;
 }
 
 .light .text-zinc-300 {
-  color: #334155 !important;
+  color: #44403C !important;
 }
 
 .light .text-zinc-400 {
-  color: #475569 !important;
+  color: #57534E !important;
 }
 
 .light .text-zinc-500 {
-  color: #64748b !important;
+  color: #78716C !important;
 }
 
 .light .bg-white\/5,
 .light .bg-white\/\[0\.02\],
 .light .bg-white\/\[0\.03\],
 .light .bg-white\/\[0\.04\] {
-  background-color: rgba(15, 23, 42, 0.03) !important;
+  background-color: rgba(140, 120, 95, 0.06) !important;
 }
 
 .light .border-white\/10,
 .light .border-white\/5,
 .light .border-white\/15,
+.light .border-white\/20,
 .light .border-white\/\[0\.06\],
 .light .border-white\/\[0\.07\],
 .light .border-white\/\[0\.08\] {
-  border-color: rgba(15, 23, 42, 0.08) !important;
+  border-color: rgba(140, 120, 95, 0.16) !important;
 }
 
-/* Light mode surfaces: dark cards → light cards */
+/* Light mode surfaces: dark cards → warm cream cards */
 .light .bg-black\/40,
 .light .bg-black\/60 {
-  background-color: rgba(241, 245, 249, 0.9) !important;
+  background-color: rgba(242, 234, 224, 0.95) !important;
 }
 
 .light .bg-\[\#141926\],
@@ -265,57 +267,59 @@
   border-top-color: rgba(15, 23, 42, 0.08) !important;
 }
 
-/* ── MissionsShowcase: component cards in light mode ── */
+/* ── MissionsShowcase: component cards in warm cream light mode ── */
 
-/* Card body dark backgrounds → white in light mode */
+/* Card body dark backgrounds → warm off-white in light mode */
 .light .bg-\[\#0c0c12\] {
-  background-color: #ffffff !important;
+  background-color: #FFFDF9 !important;
 }
 .light .bg-\[\#09090f\] {
-  background-color: #f1f5f9 !important;
+  background-color: #F3ECE2 !important;
 }
 .light .bg-\[\#07080d\] {
-  background-color: #f1f5f9 !important;
+  background-color: #F3ECE2 !important;
 }
 
-/* text-white inside cards → dark slate in light mode */
+/* text-white inside cards → dark warm stone in light mode */
 .light article .text-white,
 .light article .text-white\/90 {
-  color: #0f172a !important;
+  color: #1C1917 !important;
 }
 
 /* component card border */
 .light article {
-  border-color: rgba(15, 23, 42, 0.12) !important;
-  background-color: rgba(255,255,255,0.9) !important;
+  border-color: rgba(140, 120, 95, 0.18) !important;
+  background-color: rgba(255, 253, 249, 0.95) !important;
+  box-shadow: 0 10px 25px -4px rgba(120, 90, 60, 0.07) !important;
 }
 
 /* mission code / badge overlay on component cards */
 .light article .bg-black\/65 {
-  background-color: rgba(241,245,249,0.92) !important;
+  background-color: rgba(243, 236, 226, 0.95) !important;
 }
 .light article h3 {
-  color: #0f172a !important;
+  color: #1C1917 !important;
 }
 
 /* Video fallback gradient text in light mode */
 .light article p.relative {
-  color: #475569 !important;
+  color: #57534E !important;
 }
 
 /* Fullstack / Hackathon card glass-hud panels in light mode */
 .light .rounded-3xl.glass-hud,
 .light .rounded-2xl.glass-hud {
-  background: rgba(255,255,255,0.95) !important;
-  border-color: rgba(15,23,42,0.1) !important;
+  background: rgba(254, 252, 248, 0.95) !important;
+  border-color: rgba(140, 120, 95, 0.16) !important;
+  box-shadow: 0 16px 45px -8px rgba(120, 90, 60, 0.08) !important;
 }
 
 /* Inner architecture / highlight boxes in light mode */
 .light .bg-black\/40 {
-  background-color: rgba(241,245,249,0.9) !important;
+  background-color: rgba(242, 234, 224, 0.95) !important;
 }
 .light .bg-black\/75 {
-  background-color: rgba(255,255,255,0.9) !important;
+  background-color: rgba(254, 252, 248, 0.95) !important;
 }
 
 /* text-white inside fullstack / hackathon cards */
@@ -323,7 +327,7 @@
 .light .rounded-3xl.glass-hud .text-white\/90,
 .light .rounded-2xl.glass-hud .text-white,
 .light .rounded-2xl.glass-hud .text-white\/90 {
-  color: #0f172a !important;
+  color: #1C1917 !important;
 }
 
 /* Inner architecture steps text */

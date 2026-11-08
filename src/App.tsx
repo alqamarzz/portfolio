@@ -43,7 +43,7 @@ export function App() {
 
   const getThemeClass = () => {
     if (isLight || theme === 'gwen') {
-      return 'theme-gwen light text-zinc-900 bg-[#f8fafc]';
+      return 'theme-gwen light text-stone-900 bg-[#FAF7F2]';
     }
     switch (theme) {
       case 'miles':  return 'theme-miles text-zinc-100 bg-[#06070a]';
