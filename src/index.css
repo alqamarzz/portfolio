@@ -265,6 +265,138 @@
   border-top-color: rgba(15, 23, 42, 0.08) !important;
 }
 
+/* ── MissionsShowcase: component cards in light mode ── */
+
+/* Card body dark backgrounds → white in light mode */
+.light .bg-\[\#0c0c12\] {
+  background-color: #ffffff !important;
+}
+.light .bg-\[\#09090f\] {
+  background-color: #f1f5f9 !important;
+}
+.light .bg-\[\#07080d\] {
+  background-color: #f1f5f9 !important;
+}
+
+/* text-white inside cards → dark slate in light mode */
+.light article .text-white,
+.light article .text-white\/90 {
+  color: #0f172a !important;
+}
+
+/* component card border */
+.light article {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  background-color: rgba(255,255,255,0.9) !important;
+}
+
+/* mission code / badge overlay on component cards */
+.light article .bg-black\/65 {
+  background-color: rgba(241,245,249,0.92) !important;
+}
+.light article h3 {
+  color: #0f172a !important;
+}
+
+/* Video fallback gradient text in light mode */
+.light article p.relative {
+  color: #475569 !important;
+}
+
+/* Fullstack / Hackathon card glass-hud panels in light mode */
+.light .rounded-3xl.glass-hud,
+.light .rounded-2xl.glass-hud {
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(15,23,42,0.1) !important;
+}
+
+/* Inner architecture / highlight boxes in light mode */
+.light .bg-black\/40 {
+  background-color: rgba(241,245,249,0.9) !important;
+}
+.light .bg-black\/75 {
+  background-color: rgba(255,255,255,0.9) !important;
+}
+
+/* text-white inside fullstack / hackathon cards */
+.light .rounded-3xl.glass-hud .text-white,
+.light .rounded-3xl.glass-hud .text-white\/90,
+.light .rounded-2xl.glass-hud .text-white,
+.light .rounded-2xl.glass-hud .text-white\/90 {
+  color: #0f172a !important;
+}
+
+/* Inner architecture steps text */
+.light .text-zinc-200 {
+  color: #1e293b !important;
+}
+
+/* "Live Stack Active" badge readability */
+.light .text-zinc-300 {
+  color: #334155 !important;
+}
+
+/* Switcher bar sub-desc & secondary text */
+.light .text-zinc-400 {
+  color: #475569 !important;
+}
+.light .text-zinc-500 {
+  color: #64748b !important;
+}
+
+/* Hackathon card highlights list chevron */
+.light .text-\[\#14F195\] {
+  color: #059669 !important;
+}
+
+/* Fullstack project chevron highlight */
+.light .text-\[\#38bdf8\] {
+  color: #0369a1 !important;
+}
+
+/* bg-white/[0.04] inside cards */
+.light .bg-white\/\[0\.04\] {
+  background-color: rgba(15,23,42,0.04) !important;
+}
+.light .bg-white\/\[0\.02\] {
+  background-color: rgba(15,23,42,0.03) !important;
+}
+.light .bg-white\/5 {
+  background-color: rgba(15,23,42,0.04) !important;
+}
+
+/* Hover states on action buttons in light mode */
+.light .hover\:bg-white\/15:hover,
+.light .hover\:bg-white\/10:hover {
+  background-color: rgba(15,23,42,0.08) !important;
+}
+
+/* bg-white/10 non-interactive surfaces */
+.light .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Pagination dots bg-white/20 */
+.light .bg-white\/20 {
+  background-color: rgba(15,23,42,0.15) !important;
+}
+
+/* Fullstack slide toggle pills bg */
+.light .bg-black\/40 {
+  background-color: #f1f5f9 !important;
+}
+
+/* Switcher count badge bg-white/5 in switcher bar */
+.light .border-white\/10 {
+  border-color: rgba(15,23,42,0.1) !important;
+}
+.light .border-white\/15 {
+  border-color: rgba(15,23,42,0.12) !important;
+}
+.light .border-white\/20 {
+  border-color: rgba(15,23,42,0.14) !important;
+}
+
 /* Spider Eye Squint Animation */
 @keyframes eyeSquint {
   0%, 100% {

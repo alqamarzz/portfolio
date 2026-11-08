@@ -251,7 +251,9 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
       {/* ── Horizontal Slide Controls & Tab Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         {/* Toggle Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/10 backdrop-blur-md self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl border backdrop-blur-md self-start sm:self-auto"
+          style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
+        >
           {FULLSTACK_PROJECTS.map((p, idx) => {
             const isSelected = idx === currentIndex;
             return (
@@ -259,19 +261,25 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
                 key={p.id}
                 onClick={() => goToProject(idx)}
                 className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono-tech transition-all flex items-center gap-2 cursor-pointer ${
-                  isSelected ? 'text-white font-bold' : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                  isSelected
+                    ? 'font-bold'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
                 }`}
+                style={{ color: isSelected ? '#f8fafc' : undefined }}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="activeFullstackSlidePill"
-                    className="absolute inset-0 rounded-lg bg-white/10 border backdrop-blur-md -z-10 shadow-sm"
-                    style={{ borderColor: `${p.accentColor}60` }}
+                    className="absolute inset-0 rounded-lg border backdrop-blur-md -z-10 shadow-sm"
+                    style={{
+                      borderColor: `${p.accentColor}60`,
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                    }}
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                   />
                 )}
                 <span
-                  className="w-2 h-2 rounded-full"
+                  className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: p.accentColor }}
                 />
                 <span>{p.title}</span>
@@ -285,22 +293,26 @@ export const FullstackSection: React.FC<FullstackSectionProps> = ({ triggerSpide
 
         {/* Counter & Arrow Nav */}
         <div className="flex items-center gap-2.5 text-xs font-mono-tech text-zinc-400 self-end sm:self-auto">
-          <span className="text-[11px] px-2.5 py-1 rounded-lg bg-white/5 border border-white/10">
-            Slide <span className="text-white font-bold">{currentIndex + 1}</span> of{' '}
-            <span className="text-white font-bold">{FULLSTACK_PROJECTS.length}</span>
+          <span className="text-[11px] px-2.5 py-1 rounded-lg border"
+            style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
+          >
+            Slide <strong className="font-bold" style={{ color: 'inherit' }}>{currentIndex + 1}</strong> of{' '}
+            <strong className="font-bold" style={{ color: 'inherit' }}>{FULLSTACK_PROJECTS.length}</strong>
           </span>
 
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrev}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-white transition-all cursor-pointer active:scale-95"
+              className="p-1.5 rounded-lg border transition-all cursor-pointer active:scale-95 hover:opacity-80"
+              style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
               title="Previous fullstack project (Swipe right)"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={handleNext}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-white transition-all cursor-pointer active:scale-95"
+              className="p-1.5 rounded-lg border transition-all cursor-pointer active:scale-95 hover:opacity-80"
+              style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
               title="Next fullstack project (Swipe left)"
             >
               <ChevronRight className="w-4 h-4" />

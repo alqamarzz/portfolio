@@ -104,41 +104,53 @@ export const MissionsShowcase: React.FC<MissionsShowcaseProps> = ({
       />
 
       {/* ── Section Header ── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-8 text-center flex flex-col items-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10 text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono-tech mb-3 uppercase tracking-wider backdrop-blur-md"
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-mono-tech mb-4 uppercase tracking-wider backdrop-blur-md ${
+            isLight
+              ? 'bg-slate-100 border-slate-300 text-slate-600'
+              : 'bg-white/5 border-white/10 text-zinc-300'
+          }`}
         >
           <Sparkles className="w-3.5 h-3.5 text-[#ef233c]" />
-          <span className="text-zinc-300">Classified Missions Database</span>
-          <span className="text-zinc-500 font-semibold">· Tabbed Control Deck</span>
+          <span>Classified Missions Database</span>
+          <span className={`font-semibold ${isLight ? 'text-slate-400' : 'text-zinc-500'}`}>· Tabbed Control Deck</span>
         </motion.div>
 
-        <h2 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight">
+        <h2 className={`font-heading text-4xl sm:text-6xl font-extrabold tracking-tight ${isLight ? 'text-slate-900' : ''}`}>
           Shipped <span className="text-[#ef233c] font-comic">Missions</span> & Craft
         </h2>
 
-        <p className="text-zinc-400 text-xs sm:text-sm max-w-xl mt-2 leading-relaxed">
+        <p className={`text-sm sm:text-base max-w-xl mt-3 leading-relaxed ${isLight ? 'text-slate-600' : 'text-zinc-400'}`}>
           Switch horizontally between tactile UI components, fullstack real-time platforms, and Web3 hackathon protocols.
         </p>
 
         {/* ── Segmented Horizontal Switcher Bar ── */}
-        <div className="mt-8 w-full max-w-3xl flex items-center justify-between gap-2 p-1.5 rounded-2xl glass-hud border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        <div className={`mt-10 w-full max-w-3xl flex items-center justify-between gap-2 p-2 rounded-2xl border shadow-xl ${
+          isLight
+            ? 'bg-white border-slate-200 shadow-slate-200/80'
+            : 'glass-hud border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.5)]'
+        }`}>
           
           {/* Quick Prev Button */}
           <button
             onClick={handlePrev}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors hidden sm:flex items-center justify-center cursor-pointer"
+            className={`p-2.5 rounded-xl transition-colors hidden sm:flex items-center justify-center cursor-pointer ${
+              isLight
+                ? 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                : 'text-zinc-400 hover:text-white hover:bg-white/10'
+            }`}
             title="Previous domain"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
           {/* Tab Buttons */}
-          <div className="grid grid-cols-3 gap-1.5 flex-1">
-            {TABS.map((tab, idx) => {
+          <div className="grid grid-cols-3 gap-2 flex-1">
+            {TABS.map((tab) => {
               const isActive = tab.id === activeTab;
               const Icon = tab.icon;
 
@@ -146,42 +158,46 @@ export const MissionsShowcase: React.FC<MissionsShowcaseProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`relative py-2.5 px-2 sm:px-4 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2.5 transition-all duration-200 cursor-pointer text-center sm:text-left ${
+                  className={`relative py-3 px-2 sm:px-4 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 transition-all duration-200 cursor-pointer text-center sm:text-left ${
                     isActive
-                      ? 'text-white font-bold'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                      ? isLight ? 'text-slate-900 font-bold' : 'text-white font-bold'
+                      : isLight
+                        ? 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
                   }`}
                 >
                   {/* Active sliding background */}
                   {isActive && (
                     <motion.div
                       layoutId="activeShowcaseTab"
-                      className="absolute inset-0 rounded-xl bg-white/10 border shadow-lg backdrop-blur-md -z-10"
+                      className={`absolute inset-0 rounded-xl border shadow-lg -z-10 ${
+                        isLight ? 'bg-slate-100' : 'bg-white/10 backdrop-blur-md'
+                      }`}
                       style={{
-                        borderColor: `${tab.accentColor}60`,
-                        boxShadow: `0 0 20px ${tab.accentColor}25`,
+                        borderColor: `${tab.accentColor}80`,
+                        boxShadow: `0 0 20px ${tab.accentColor}30`,
                       }}
                       transition={{ type: 'spring', bounce: 0.2, duration: 0.45 }}
                     />
                   )}
 
                   <div
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors"
                     style={{
-                      backgroundColor: isActive ? `${tab.accentColor}25` : 'rgba(255,255,255,0.05)',
-                      color: isActive ? tab.accentColor : 'inherit',
+                      backgroundColor: isActive ? `${tab.accentColor}25` : isLight ? 'rgba(15,23,42,0.05)' : 'rgba(255,255,255,0.05)',
+                      color: isActive ? tab.accentColor : isLight ? '#64748b' : 'inherit',
                     }}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-5 h-5" />
                   </div>
 
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5 justify-center sm:justify-start">
-                      <span className="text-[11px] sm:text-xs font-heading font-extrabold truncate">
+                      <span className={`text-xs sm:text-sm font-heading font-extrabold truncate ${isLight && !isActive ? 'text-slate-700' : ''}`}>
                         {tab.label}
                       </span>
                       <span
-                        className="text-[9px] font-mono-tech px-1.5 py-0.2 rounded-full hidden md:inline-block uppercase font-bold"
+                        className="text-[10px] font-mono-tech px-2 py-0.5 rounded-full hidden md:inline-block uppercase font-bold"
                         style={{
                           backgroundColor: `${tab.accentColor}20`,
                           color: tab.accentColor,
@@ -190,7 +206,7 @@ export const MissionsShowcase: React.FC<MissionsShowcaseProps> = ({
                         {tab.countBadge}
                       </span>
                     </div>
-                    <span className="text-[9px] sm:text-[10px] font-mono-tech text-zinc-400 truncate hidden xs:block">
+                    <span className={`text-[10px] sm:text-[11px] font-mono-tech truncate hidden xs:block ${isLight ? 'text-slate-500' : 'text-zinc-400'}`}>
                       {tab.shortDesc}
                     </span>
                   </div>
@@ -202,10 +218,14 @@ export const MissionsShowcase: React.FC<MissionsShowcaseProps> = ({
           {/* Quick Next Button */}
           <button
             onClick={handleNext}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors hidden sm:flex items-center justify-center cursor-pointer"
+            className={`p-2.5 rounded-xl transition-colors hidden sm:flex items-center justify-center cursor-pointer ${
+              isLight
+                ? 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                : 'text-zinc-400 hover:text-white hover:bg-white/10'
+            }`}
             title="Next domain"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>

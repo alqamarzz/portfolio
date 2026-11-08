@@ -22,8 +22,7 @@ interface HackathonsSectionProps {
   isEmbedded?: boolean;
 }
 
-export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {
-  const hackathonProjects = [
+export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpiderSense, isEmbedded = false }) => {  const hackathonProjects = [
     {
       id: 'street-sign',
       title: 'StreetSign',
@@ -174,7 +173,7 @@ export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpi
               <h3 className="font-heading text-2xl sm:text-3xl font-extrabold group-hover:text-white transition-colors flex items-center gap-2">
                 <span>{project.title}</span>
               </h3>
-              <p className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 to-zinc-400 mt-1 mb-3">
+              <p className="text-sm font-semibold text-slate-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-zinc-200 dark:to-zinc-400 mt-1 mb-3">
                 {project.subtitle}
               </p>
 
@@ -224,7 +223,7 @@ export const HackathonsSection: React.FC<HackathonsSectionProps> = ({ triggerSpi
                 </span>
                 {project.highlights.map((h, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs text-zinc-300">
-                    <span className="text-[#14F195] font-bold">›</span>
+                    <span className="text-emerald-500 font-bold">›</span>
                     <span className="leading-snug">{h}</span>
                   </div>
                 ))}
